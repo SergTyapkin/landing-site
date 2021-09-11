@@ -1,8 +1,7 @@
+import './styles/global.styl';
 import './styles/main.styl';
 import './styles/formControls.styl';
 import './styles/popupMessages.styl';
-import './styles/global.styl';
-import './styles/main.styl';
 
 // import { registerSW } from './modules/sw-installer.js';
 import App from './app';

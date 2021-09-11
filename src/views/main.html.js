@@ -1,11 +1,8 @@
 import Handlebars from 'handlebars/dist/cjs/handlebars';
 import PageScroller from '../modules/pageScroller';
-
-import { getImageAsDataURL } from '@korolion/get-image-as-dataurl/getImageAsDataUrl.js';
-import { validateEmail, validateFullname } from '../modules/validators';
-
+``
 const html = `
-<div id="block-1" class="absolute-wrapper fullsize">
+<div id="block-1" class="absolute-wrapper landing-block">
     <div id="block-1-left" class="block-1-bg left fullsize"></div>
     <div id="block-1-right" class="block-1-bg right fullsize"></div>
     <div id="block-1-line-left" class="divide-line left"></div>
@@ -13,6 +10,9 @@ const html = `
 </div>
 `;
 
+const divideLinesWidth = 1.5;
+const divideLinesBetween = 1;
+const divideLinesXOffset = 7;
 /**
  * Renders profile page and "activating" it's js
  *
@@ -20,32 +20,42 @@ const html = `
  * @param {object} app object of a main App class
  */
 export async function handler(element, app) {
-    const block1Left = document.getElementById("block-1-left");
-    const block1Right = document.getElementById("block-1-right");
-    const block1LineLeft = document.getElementById("block-1-line-left");
-    const block1LineRight = document.getElementById("block-1-line-right");
-
     const response = await app.apiGet('/user');
     let username, avatarUrl;
     if (response.ok) {
         const data = await response.json();
-        ({username, avatarUrl} = data);
+        ({ username, avatarUrl } = data);
         app.storage.username = username;
         app.storage.avatarUrl = avatarUrl;
     }
-
+    // --- Rander page
     const template = Handlebars.compile(html);
     element.innerHTML = template({
         username: username,
-        avatarUrl: (avatarUrl?.length > 0) ? `${app.apiUrl}/${avatarUrl}` : app.defaultAvatarUrl
+        avatarUrl: (avatarUrl?.length > 0) ? app.apiUrl + '/' + avatarUrl : app.defaultAvatarUrl
     });
+    element.classList.add('landing');
 
-    const scroller = new PageScroller(document.body, [
-        (event, progress) => {
-            console.log(progress);
-            block1LineLeft.style.clipPath = `polygon((${50 - progress/200}% 0%,  ${50 - progress/200 + 1.5} 0%,  (${50 - progress/200 + 1.5 - 7} 100%,  ${50 - progress/200 - 7} 100%)`;
+    // --- Start page logic
+    const block1Left = document.getElementById('block-1-left');
+    const block1Right = document.getElementById('block-1-right');
+    const block1LineLeft = document.getElementById('block-1-line-left');
+    const block1LineRight = document.getElementById('block-1-line-right');
+
+    const Scroller = new PageScroller();
+    Scroller.setHandlers([
+        (progress) => {
+            const reProgress = 1 - progress;
+            block1LineLeft.style.clipPath = `polygon(${(50 - divideLinesBetween / 2 - divideLinesWidth + divideLinesXOffset) * reProgress}% 0%,  ${(50 - divideLinesBetween / 2 + divideLinesXOffset) * reProgress}% 0%,  ${(50 - divideLinesBetween / 2 - divideLinesXOffset) * reProgress}% 100%,  ${(50 - divideLinesBetween / 2 - divideLinesWidth - divideLinesXOffset) * reProgress}% 100%)`;
+            block1Left.style.clipPath = `polygon(0% 0%, ${(50 - divideLinesBetween / 2 - divideLinesWidth + divideLinesXOffset) * reProgress}% 0%,  ${(50 - divideLinesBetween / 2 - divideLinesWidth - divideLinesXOffset) * reProgress}% 100%, 0% 100%)`;
+        },
+        (progress) => {
+            progress = 100 / (50 + divideLinesBetween / 2 - divideLinesXOffset) * progress;
+            block1LineRight.style.clipPath = `polygon(${(50 + divideLinesBetween / 2 + divideLinesXOffset) * (1 + progress)}% 0%,  ${(50 + divideLinesBetween / 2 + divideLinesWidth + divideLinesXOffset) * (1 + progress)}% 0%,  ${(50 + divideLinesBetween / 2 + divideLinesWidth - divideLinesXOffset) * (1 + progress)}% 100%,  ${(50 + divideLinesBetween / 2 - divideLinesXOffset) * (1 + progress)}% 100%)`;
+            block1Right.style.clipPath = `polygon(${(50 + divideLinesBetween / 2 + divideLinesWidth + divideLinesXOffset) * (1 + progress)}% 0%, 100% 0%, 100% 100%,  ${(50 + divideLinesBetween / 2 + divideLinesWidth - divideLinesXOffset) * (1 + progress)}% 100%)`;
         }
     ]);
+
     /*
     const avatarDataURL = document.getElementById('avatarDataURL');
     if (avatarUrl) {

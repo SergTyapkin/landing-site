@@ -1,27 +1,38 @@
 const scrollBottomOffset = 1; // px
+const scrollTopOffset = 1; // px
 
 export default class PageScroller {
-    constructor(element, pagesHandlers, scrollTopHandler = null, scrollBottomHandler = null) {
+    constructor(element = document.documentElement, onscrollElement = window) {
         this.element = element;
+        this.onscrollElement = onscrollElement;
+    }
+
+    setHandlers(pagesHandlers = [], pageToPageHandlers = [], scrollTopHandler = null, scrollBottomHandler = null) {
         this.handlers = pagesHandlers;
+        this.pages = pagesHandlers.length;
 
         let isMutexBlocked = false;
-        this.scrollHandler = (event) => {
+        this.scrollHandler = () => {
             if (isMutexBlocked) {
                 return;
             }
-            isMutexBlocked = true;
-            this.handlers[Math.floor(this.element.scrollTop / this.element.clientHeight)](event, (this.element.scrollTop % this.element.clientHeight) / this.element.clientHeight);
+            isMutexBlocked = true; // start mutex
+            const handlerId = Math.floor(this.element.scrollTop / this.element.clientHeight);
+            const progress = (this.element.scrollTop % this.element.clientHeight) / this.element.clientHeight;
+            if (handlerId < this.pages) {
+                this.handlers[handlerId](progress);
+            }
 
-            if (this.block.scrollTop <= scrollTopOffset && scrollTopHandler) {
-                scrollTopHandler(event);
+            if (this.element.scrollTop <= scrollTopOffset && scrollTopHandler) {
+                scrollTopHandler();
             }
-            if (this.block.scrollTop + this.block.clientHeight >= this.block.scrollHeight - scrollBottomOffset && scrollBottomHandler) {
-                scrollBottomHandler(event);
+            if (this.element.scrollTop + this.element.clientHeight >= this.element.scrollHeight - scrollBottomOffset && scrollBottomHandler) {
+                scrollBottomHandler();
             }
-            isMutexBlocked = false;
+            isMutexBlocked = false; // end mutex
         };
 
-        element.addEventListener('scroll', this.scrollHandler);
+        this.onscrollElement.addEventListener('scroll', this.scrollHandler);
+        this.scrollHandler();
     }
 }
