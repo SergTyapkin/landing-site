@@ -1,18 +1,29 @@
 import Handlebars from 'handlebars/dist/cjs/handlebars';
 import PageScroller from '../modules/pageScroller';
-``
+
 const html = `
-<div id="block-1" class="absolute-wrapper landing-block">
-    <div id="block-1-left" class="block-1-bg left fullsize"></div>
-    <div id="block-1-right" class="block-1-bg right fullsize"></div>
-    <div id="block-1-line-left" class="divide-line left"></div>
-    <div id="block-1-line-right" class="divide-line right"></div>
+<div id="block-2" class="block-2 absolute-wrapper landing-block">
+    <div id="block-2-circle-plate" class="block-2-circle plate hide"></div>
+    <svg id="block-2-circle" class="lighting-stroke block-2-circle" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
+    <svg id="block-2-circle-shadow" class="lighting-stroke block-2-circle" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
+</div>
+
+<div id="block-1" class="block-1 absolute-wrapper landing-block">
+    <div id="block-1-left" class="block-1-plate left fullsize"></div>
+    <div id="block-1-right" class="block-1-plate right fullsize"></div>
+    <div id="block-1-line-left" class="divide-line left animate"></div>
+    <div id="block-1-line-right" class="divide-line right animate"></div>
 </div>
 `;
 
 const divideLinesWidth = 1.5;
 const divideLinesBetween = 1;
 const divideLinesXOffset = 7;
+
+const block2CircleViewPortDiameter = 50;
+
+const block2CircleDiameter = 150;
+const block2CircleMaxScale = Math.max(document.documentElement.clientWidth, document.documentElement.clientHeight) / block2CircleDiameter * 1.5;
 /**
  * Renders profile page and "activating" it's js
  *
@@ -28,7 +39,7 @@ export async function handler(element, app) {
         app.storage.username = username;
         app.storage.avatarUrl = avatarUrl;
     }
-    // --- Rander page
+    // --- Render page
     const template = Handlebars.compile(html);
     element.innerHTML = template({
         username: username,
@@ -42,17 +53,88 @@ export async function handler(element, app) {
     const block1LineLeft = document.getElementById('block-1-line-left');
     const block1LineRight = document.getElementById('block-1-line-right');
 
+    const block2Circle = document.getElementById('block-2-circle');
+    const block2CircleShadow = document.getElementById('block-2-circle-shadow');
+    const block2CirclePlate = document.getElementById('block-2-circle-plate');
+
+    setTimeout(() => block1LineLeft.classList.remove('animate'), 500);
+    setTimeout(() => block1LineRight.classList.remove('animate'), 750);
+
     const Scroller = new PageScroller();
     Scroller.setHandlers([
-        (progress) => {
-            const reProgress = 1 - progress;
-            block1LineLeft.style.clipPath = `polygon(${(50 - divideLinesBetween / 2 - divideLinesWidth + divideLinesXOffset) * reProgress}% 0%,  ${(50 - divideLinesBetween / 2 + divideLinesXOffset) * reProgress}% 0%,  ${(50 - divideLinesBetween / 2 - divideLinesXOffset) * reProgress}% 100%,  ${(50 - divideLinesBetween / 2 - divideLinesWidth - divideLinesXOffset) * reProgress}% 100%)`;
-            block1Left.style.clipPath = `polygon(0% 0%, ${(50 - divideLinesBetween / 2 - divideLinesWidth + divideLinesXOffset) * reProgress}% 0%,  ${(50 - divideLinesBetween / 2 - divideLinesWidth - divideLinesXOffset) * reProgress}% 100%, 0% 100%)`;
+        // --- Block 1
+        { // left plate goes to left
+            onstart: () => {
+                block1LineLeft.classList.remove('hide');
+                block1Left.classList.remove('hide');
+            },
+            onprogress: (progress) => {
+                const reProgress = 1 - progress;
+                block1LineLeft.classList.remove('animate');
+                block1LineLeft.style.clipPath = `polygon(${(50 - divideLinesBetween / 2 - divideLinesWidth + divideLinesXOffset) * reProgress}% 0%,  ${(50 - divideLinesBetween / 2 + divideLinesXOffset) * reProgress}% 0%,  ${(50 - divideLinesBetween / 2 - divideLinesXOffset) * reProgress}% 100%,  ${(50 - divideLinesBetween / 2 - divideLinesWidth - divideLinesXOffset) * reProgress}% 100%)`;
+                block1Left.style.clipPath = `polygon(0% 0%, ${(50 - divideLinesBetween / 2 - divideLinesWidth + divideLinesXOffset) * reProgress}% 0%,  ${(50 - divideLinesBetween / 2 - divideLinesWidth - divideLinesXOffset) * reProgress}% 100%, 0% 100%)`;
+            },
+            onendTop: () => {
+            },
+            onendBottom: () => {
+                block1LineLeft.classList.add('hide');
+                block1Left.classList.add('hide');
+            }
         },
-        (progress) => {
-            progress = 100 / (50 + divideLinesBetween / 2 - divideLinesXOffset) * progress;
-            block1LineRight.style.clipPath = `polygon(${(50 + divideLinesBetween / 2 + divideLinesXOffset) * (1 + progress)}% 0%,  ${(50 + divideLinesBetween / 2 + divideLinesWidth + divideLinesXOffset) * (1 + progress)}% 0%,  ${(50 + divideLinesBetween / 2 + divideLinesWidth - divideLinesXOffset) * (1 + progress)}% 100%,  ${(50 + divideLinesBetween / 2 - divideLinesXOffset) * (1 + progress)}% 100%)`;
-            block1Right.style.clipPath = `polygon(${(50 + divideLinesBetween / 2 + divideLinesWidth + divideLinesXOffset) * (1 + progress)}% 0%, 100% 0%, 100% 100%,  ${(50 + divideLinesBetween / 2 + divideLinesWidth - divideLinesXOffset) * (1 + progress)}% 100%)`;
+        { // right plate goes to right
+            onstart: () => {
+                block1LineRight.classList.remove('hide');
+                block1Right.classList.remove('hide');
+            },
+            onprogress: (progress) => {
+                progress = 100 / (50 + divideLinesBetween / 2 - divideLinesXOffset) * progress;
+                block1LineRight.classList.remove('animate');
+                block1LineRight.style.clipPath = `polygon(${(50 + divideLinesBetween / 2 + divideLinesXOffset) * (1 + progress)}% 0%,  ${(50 + divideLinesBetween / 2 + divideLinesWidth + divideLinesXOffset) * (1 + progress)}% 0%,  ${(50 + divideLinesBetween / 2 + divideLinesWidth - divideLinesXOffset) * (1 + progress)}% 100%,  ${(50 + divideLinesBetween / 2 - divideLinesXOffset) * (1 + progress)}% 100%)`;
+                block1Right.style.clipPath = `polygon(${(50 + divideLinesBetween / 2 + divideLinesWidth + divideLinesXOffset) * (1 + progress)}% 0%, 100% 0%, 100% 100%,  ${(50 + divideLinesBetween / 2 + divideLinesWidth - divideLinesXOffset) * (1 + progress)}% 100%)`;
+            },
+            onendTop: () => {
+            },
+            onendBottom: () => {
+                block1LineRight.classList.add('hide');
+                block1Right.classList.add('hide');
+            }
+        },
+
+        // --- Block 2
+        { // circle stroke fills around
+            onstart: () => {
+                block2Circle.classList.remove('hide');
+                block2CircleShadow.classList.remove('hide');
+                block2CirclePlate.classList.add('hide');
+            },
+            onprogress: (progress) => {
+                block2Circle.style.strokeDasharray = 2 * Math.PI * block2CircleViewPortDiameter * progress + ' 1000';
+                block2CircleShadow.style.strokeDasharray = 2 * Math.PI * block2CircleViewPortDiameter * progress + ' 1000';
+            },
+            onendTop: () => {
+                block2Circle.classList.add('hide');
+                block2CircleShadow.classList.add('hide');
+            },
+            onendBottom: () => {
+                block2CirclePlate.classList.remove('hide');
+            }
+        },
+        { // circle scales over the screen
+            onstart: () => {
+                block2Circle.classList.remove('hide');
+                block2CircleShadow.classList.remove('hide');
+            },
+            onprogress: (progress) => {
+                block2Circle.style.transform = `rotate(-90deg) scale(${1 + block2CircleMaxScale * progress})`;
+                block2CircleShadow.style.transform = `rotate(-90deg) scale(${1 + block2CircleMaxScale * progress})`;
+                block2CirclePlate.style.transform = `rotate(-90deg) scale(${1 + block2CircleMaxScale * progress})`;
+            },
+            onendTop: () => {
+            },
+            onendBottom: () => {
+                block2Circle.classList.add('hide');
+                block2CircleShadow.classList.add('hide');
+            }
         }
     ]);
 

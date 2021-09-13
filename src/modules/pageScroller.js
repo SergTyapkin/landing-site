@@ -1,13 +1,12 @@
-const scrollBottomOffset = 1; // px
-const scrollTopOffset = 1; // px
-
 export default class PageScroller {
+    lastPageIdx = 0;
+
     constructor(element = document.documentElement, onscrollElement = window) {
         this.element = element;
         this.onscrollElement = onscrollElement;
     }
 
-    setHandlers(pagesHandlers = [], pageToPageHandlers = [], scrollTopHandler = null, scrollBottomHandler = null) {
+    setHandlers(pagesHandlers = []) {
         this.handlers = pagesHandlers;
         this.pages = pagesHandlers.length;
 
@@ -17,22 +16,35 @@ export default class PageScroller {
                 return;
             }
             isMutexBlocked = true; // start mutex
-            const handlerId = Math.floor(this.element.scrollTop / this.element.clientHeight);
-            const progress = (this.element.scrollTop % this.element.clientHeight) / this.element.clientHeight;
-            if (handlerId < this.pages) {
-                this.handlers[handlerId](progress);
+            const pageIdx = Math.floor(this.element.scrollTop / this.element.clientHeight);
+            if (pageIdx < this.lastPageIdx) { // scroll to top
+                this.handlers[pageIdx].onstart();
+                for (let i = pageIdx + 1; i < this.lastPageIdx; i++) { // if you scroll over many pages
+                    this.handlers[i].onstart();
+                    this.handlers[i].onprogress(0);
+                    this.handlers[i].onendTop();
+                }
+                this.handlers[this.lastPageIdx].onprogress(0);
+                this.handlers[this.lastPageIdx].onendTop();
+            } else if (pageIdx > this.lastPageIdx) { // scroll to bottom
+                this.handlers[pageIdx].onstart();
+                for (let i = this.lastPageIdx + 1; i < pageIdx; i++) { // if you scroll over many pages
+                    this.handlers[i].onstart();
+                    this.handlers[i].onprogress(1);
+                    this.handlers[i].onendBottom();
+                }
+                this.handlers[this.lastPageIdx].onprogress(1);
+                this.handlers[this.lastPageIdx].onendBottom();
             }
 
-            if (this.element.scrollTop <= scrollTopOffset && scrollTopHandler) {
-                scrollTopHandler();
+            const progress = (this.element.scrollTop % this.element.clientHeight) / this.element.clientHeight;
+            if (pageIdx < this.pages) {
+                this.handlers[pageIdx].onprogress(progress);
             }
-            if (this.element.scrollTop + this.element.clientHeight >= this.element.scrollHeight - scrollBottomOffset && scrollBottomHandler) {
-                scrollBottomHandler();
-            }
+            this.lastPageIdx = pageIdx;
             isMutexBlocked = false; // end mutex
         };
 
         this.onscrollElement.addEventListener('scroll', this.scrollHandler);
-        this.scrollHandler();
     }
 }
