@@ -10,6 +10,10 @@ export default class PageScroller {
         this.handlers = pagesHandlers;
         this.pages = pagesHandlers.length;
 
+        let clientHeight = 1;
+        this.handlers.forEach((handler) => { clientHeight += handler.duration; });
+        this.element.style.height = clientHeight * 100 + 'vh';
+
         let isMutexBlocked = false;
         this.scrollHandler = () => {
             if (isMutexBlocked) {
@@ -17,7 +21,18 @@ export default class PageScroller {
             }
             isMutexBlocked = true; // start mutex
 
-            const pageIdx = Math.floor(this.element.scrollTop / this.element.clientHeight);
+            const curScroll = this.element.scrollTop / this.element.clientHeight;
+            let prevPagesDuration = 0;
+            let curPageDuration;
+            let pageIdx;
+            for (let i = 0; i < this.pages; i++) { // get current page idx
+                curPageDuration = this.handlers[i].duration;
+                if (prevPagesDuration + curPageDuration > curScroll) {
+                    pageIdx = i;
+                    break;
+                }
+                prevPagesDuration += curPageDuration;
+            }
             if (pageIdx >= this.pages) {
                 isMutexBlocked = false;
                 return;
@@ -43,11 +58,12 @@ export default class PageScroller {
                 this.handlers[this.lastPageIdx].onendBottom();
             }
 
-            const progress = (this.element.scrollTop % this.element.clientHeight) / this.element.clientHeight;
+            const progress = (this.element.scrollTop - this.element.clientHeight * prevPagesDuration) / (this.element.clientHeight * curPageDuration);
             if (pageIdx < this.pages) {
                 this.handlers[pageIdx].onprogress(progress);
             }
             this.lastPageIdx = pageIdx;
+
             isMutexBlocked = false; // end mutex
         };
 

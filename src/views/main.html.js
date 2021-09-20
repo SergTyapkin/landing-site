@@ -3,8 +3,8 @@ import PageScroller from '../modules/pageScroller';
 
 const html = `
 <div id="block-1" class="block-1 absolute-wrapper">
-    <div id="block-1-left" class="block-1-plate left fullsize"></div>
-    <div id="block-1-right" class="block-1-plate right fullsize"></div>
+    <div id="block-1-left" class="plate left fullsize"></div>
+    <div id="block-1-right" class="plate right fullsize"></div>
     <div id="block-1-line-left" class="divide-line left animate"></div>
     <div id="block-1-line-right" class="divide-line right animate"></div>
 </div>
@@ -44,14 +44,16 @@ const html = `
 </div>
 
 <div id="block-4" class="block-4 absolute-wrapper">
-    <svg id="block-4-spikes" class="block-4-spikes fullsize hide" preserveAspectRatio="none" viewBox="0 0 100 100">
+    <svg id="block-4-spikes" class="spikes fullsize hide" preserveAspectRatio="none" viewBox="0 0 100 100">
         <radialGradient id="radial-grad" fx="50%" fy="100%" cy="0.5" r="0.7">
             <stop offset="50%" stop-color="white" stop-opacity="0.8"></stop>  
             <stop offset="100%" stop-color="white" stop-opacity="0.0"></stop>
         </radialGradient>
         <path d="M 0 100 l 10 -20 l -5 -10 l 2 -3 l 1 -4 l 4 -3 l 1 -6 l -2 -7 l 1 -4 l -2 -5 l 10 -4 l -4 -3 l 3 -8 l 8 -2 l 1 -4 l 3 4 l 5 -9 l 1 3 l 4 2 l 3 -6 l 5 -2 l 4 10 l 2 5 l 4 2 l 2 -12 l 2 -3 l 5 8 l 1 10 l 4 -4 l 7 -2 l -3 4 l 2 5 l 8 1 l 2 5 l -5 3 l 3 2 l 6 5 l -3 2 l -1 3 l -2 5 l 3 7 l 3 1 l -3 5 l 7 8 l -2 3 L 100 100 L 100 0 L 0 0 Z" fill="url(#radial-grad)"/>
     </svg>
-    <svg class="block-4-text-path" viewBox="0 -5 100 610" xmlns="//www.w3.org/2000/svg" xmlns:xlink="//www.w3.org/1999/xlink">
+    <div id="block-4-inside-circle" class="inside-circle"></div>
+    <div id="block-4-vertical-line" class="vertical-line"></div>
+    <svg class="text-path" viewBox="0 -5 100 610" xmlns="//www.w3.org/2000/svg" xmlns:xlink="//www.w3.org/1999/xlink">
         <path id="text-path" d="M 0 550 v -500 c 0 -70, 100 -70, 100 0 v 500 c 0 70, -100 70, -100 0 Z"/>
         <text id="block-4-text-path" dy="0px" dx="0px">
             <textPath xlink:href="#text-path">
@@ -60,8 +62,6 @@ const html = `
         </text>
     </svg>
 </div>
-
-<!--block-4 is the same as block-2 and html from block-2 uses in js-->
 `;
 
 const divideLinesWidth = 1.5;
@@ -72,6 +72,8 @@ const block2CircleViewPortDiameter = 50;
 
 const block2CircleDiameter = 150;
 const block2CircleMaxScale = Math.max(document.documentElement.clientWidth, document.documentElement.clientHeight) / block2CircleDiameter * 1.5;
+
+const block4CircleMinDiameter = 10;
 /**
  * Renders profile page and "activating" it's js
  *
@@ -113,6 +115,8 @@ export async function handler(element, app) {
     const block4 = document.getElementById('block-4');
     const block4Spikes = document.getElementById('block-4-spikes');
     const block4TextPath = document.getElementById('block-4-text-path');
+    const block4VerticalLine = document.getElementById('block-4-vertical-line');
+    const block4InsideCircle = document.getElementById('block-4-inside-circle');
     const block4Circle = document.getElementById('block-4-circle');
     const block4CircleShadow = document.getElementById('block-4-circle-shadow');
 
@@ -123,6 +127,7 @@ export async function handler(element, app) {
     Scroller.setHandlers([
         // --- Block 1
         { // left plate goes to left
+            duration: 1,
             onstart: () => {
                 block1LineLeft.classList.remove('hide');
                 block1Left.classList.remove('hide');
@@ -141,6 +146,7 @@ export async function handler(element, app) {
             }
         },
         { // right plate goes to right
+            duration: 1,
             onstart: () => {
                 block1LineRight.classList.remove('hide');
                 block1Right.classList.remove('hide');
@@ -161,6 +167,7 @@ export async function handler(element, app) {
 
         // --- Block 2
         { // circle stroke fills around
+            duration: 1,
             onstart: () => {
                 block2Circle.classList.remove('hide');
                 block2CircleShadow.classList.remove('hide');
@@ -176,13 +183,14 @@ export async function handler(element, app) {
             }
         },
         { // circle scales over the screen
+            duration: 1,
             onstart: () => {
                 block2Circle.classList.remove('hide');
                 block2CircleShadow.classList.remove('hide');
                 block2Circle.classList.add('filled');
             },
             onprogress: (progress) => {
-                block2CircleShadow.style.transform = block2Circle.style.transform = `rotate(-90deg) scale(${1 + block2CircleMaxScale * progress})`;
+                block2CircleShadow.style.transform = block2Circle.style.transform = `rotate(-90deg) translate(50%, -50%) scale(${1 + block2CircleMaxScale * progress})`;
             },
             onendTop: () => {
                 block2Circle.classList.remove('filled');
@@ -194,6 +202,7 @@ export async function handler(element, app) {
 
         // --- Block 3
         { // carousel turns and moves down
+            duration: 5,
             onstart: () => {
                 block3Carousel.classList.remove('hide');
             },
@@ -212,14 +221,15 @@ export async function handler(element, app) {
 
         // --- Block 4
         { // circle scales inside the screen
+            duration: 1,
             onstart: () => {
                 block2Circle.classList.remove('hide');
                 block2CircleShadow.classList.remove('hide');
                 block2Circle.classList.add('filled');
             },
             onprogress: (progress) => {
-                progress = 1 - progress;
-                block2CircleShadow.style.transform = block2Circle.style.transform = `rotate(-90deg) scale(${1 + block2CircleMaxScale * progress})`;
+                block4InsideCircle.style.opacity = progress;
+                block2CircleShadow.style.transform = block2Circle.style.transform = `rotate(-90deg) translate(50%, -50%) scale(${1 + block2CircleMaxScale * (1 - progress)})`;
             },
             onendTop: () => {
                 block2CircleShadow.classList.add('hide');
@@ -228,12 +238,14 @@ export async function handler(element, app) {
                 block2Circle.classList.remove('filled');
             }
         },
-        { // text moves around circle
+        { // text moves around circle and inside circle moves to center
+            duration: 1,
             onstart: () => {
                 block4Spikes.classList.remove('hide');
             },
             onprogress: (progress) => {
                 block4TextPath.setAttribute('dx', 500 * progress + 'px');
+                block4InsideCircle.style.height = block4InsideCircle.style.width = block2CircleDiameter - (block2CircleDiameter - block4CircleMinDiameter) * progress + 'px';
             },
             onendTop: () => {
                 block4Spikes.classList.add('hide');
@@ -242,13 +254,18 @@ export async function handler(element, app) {
             }
         },
         { // page scrolls down and text continue to moves down
+            duration: 3,
             onstart: () => {
+                block4VerticalLine.classList.remove('hide');
             },
             onprogress: (progress) => {
                 block4TextPath.setAttribute('dx', 500 + 1000 * progress + 'px');
-                block2.style.top = block4.style.top = -100 * progress + 'vh';
+                block2.style.top = block4.style.top = -100 * progress + '%';
+                block4VerticalLine.style.height = `calc(${block4CircleMinDiameter / 2}px + ${100 * progress}%)`;
+                block4InsideCircle.style.top = 50 + 100 * progress + '%';
             },
             onendTop: () => {
+                block4VerticalLine.classList.add('hide');
             },
             onendBottom: () => {
             }
