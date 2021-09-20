@@ -8,6 +8,9 @@ divide-lines-x-offset = 7%
 
 block-2-circle-size = 150px
 
+block-4-text-path-width = 300px
+block-4-text-path-height = 1800px
+
 .absolute-wrapper
     position relative
 .absolute-wrapper > *
@@ -16,13 +19,16 @@ block-2-circle-size = 150px
 .landing
     position relative
     height (pages * 100)vh
-.landing-block
+    pointer-events none
+.landing > div
     position fixed
     width 100%
     height 100vh
-.landing-block *
+    pointer-events none
+.landing > div > *
     opacity 1
     transition opacity 0.3s ease
+    pointer-events auto
 /*.landing-block hide
     opacity 0 */ // in end of file
 
@@ -57,7 +63,7 @@ block-2-circle-size = 150px
     stroke empColor2
     background empColor2
 
-.block-2-circle
+.svg-circle
     transform rotate(-90deg)
     width block-2-circle-size
     height block-2-circle-size
@@ -65,21 +71,37 @@ block-2-circle-size = 150px
     top "calc(50% - %s)" % (block-2-circle-size / 2)
     left "calc(50% - %s)" % (block-2-circle-size / 2)
     stroke-dasharray 0 1000 // js animable
-.block-2-circle.plate
-    background #111111
+    transition fill 0.5s ease
+    letter-spacing 10px
+.svg-circle.filled
+    fill #111111
 
 .block-2-circle.plate.show
     opacity 1
-.lighting-stroke, .lighting-stroke + svg
+.lighting-stroke, .lighting-stroke + svg.lighting-stroke
     background none
     fill none
     stroke-width 3px
     overflow visible
     stroke-linecap round
-.lighting-stroke + *
+.lighting-stroke + svg.lighting-stroke
     filter blur(10px)
 
-.landing-block .hide
+// ------- Block 4
+.block-4-text-path
+    width block-4-text-path-width
+    height block-4-text-path-height
+    fill empColor5
+    overflow visible
+    top "calc(50% - %s)" % (block-4-text-path-width / 2)
+    left "calc(50% - %s)" % (block-4-text-path-width / 2)
+.block-4-text-path path
+    fill none
+
+.block-4-spikes
+    transition opacity 1s ease
+// ------- All
+.landing > div .hide
     opacity 0
 
 @keyframes roll-down-divide-line-left

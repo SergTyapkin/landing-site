@@ -58,7 +58,7 @@ export default class App {
                 authRequired: true,
             } */
             {
-                urlRegex: /^\/$/,
+                urlRegex: /^\/.*$/,
                 title: `${this.name} | Главная`,
                 handler: main.handler,
                 authRequired: false
@@ -88,7 +88,7 @@ export default class App {
         this.storage.avatar = null;
     }
 
-    apiRequest(method, path, data = {}) { return request(method, `${this.apiUrl}${path}`, data); }
+    apiRequest(method, path, data = {}) { return this.apiUrl ? request(method, `${this.apiUrl}${path}`, data) : {}; }
     apiGet(path, data = {}) { return this.apiRequest('GET', path, data); }
     apiPost(path, data = {}) { return this.apiRequest('POST', path, data); }
     apiPut(path, data = {}) { return this.apiRequest('PUT', path, data); }

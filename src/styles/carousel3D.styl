@@ -1,0 +1,40 @@
+images-count = 6
+circle-radius = 200px
+center-offset-z = circle-radius / 2
+perspective = 1000px
+image-width = 150px
+image-height = image-width / 16 * 9
+
+.carousel-3d
+    perspective perspective
+    display flex
+    flex-direction column
+    align-items center
+    overflow hidden
+    position relative
+
+.carousel-3d > figure
+    position absolute
+    margin 0
+    width 50%
+    height 100%
+    transform-style preserve-3d
+    // transition transform 0.5s ease
+    transform-origin 50% 50% center-offset-z
+
+.carousel-3d > figure > *
+    flex 0 0 auto
+
+for $i in (1..images-count)
+    .carousel-3d > figure > *:nth-child({$i})
+        width image-width
+        box-sizing border-box
+        padding 0
+
+        transform-origin 50% 50% circle-radius
+        transform "rotateY(%srad)" % (2 * 3.14159 / images-count * $i)
+
+.carousel-3d > figure > *:not(:first-of-type)
+    position absolute
+    left 0
+    top 0

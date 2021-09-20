@@ -37,7 +37,7 @@ const certificate = fs.readFileSync(PUBLIC_KEY_PATH);
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer({
     key: privateKey,
-    cert: certificate,
+    cert: certificate
 }, app);
 
 httpServer.listen(HTTP_PORT, 'localhost', () => {

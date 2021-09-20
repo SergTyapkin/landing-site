@@ -28,7 +28,7 @@ export default {
         commonjs(),
         terser({ format: { comments: false } }),
         html({
-            title: 'Resume',
+            title: 'Landing',
             attributes: {
                 html: { lang: 'ru' }
             },

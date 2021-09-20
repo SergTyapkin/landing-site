@@ -16,7 +16,13 @@ export default class PageScroller {
                 return;
             }
             isMutexBlocked = true; // start mutex
+
             const pageIdx = Math.floor(this.element.scrollTop / this.element.clientHeight);
+            if (pageIdx >= this.pages) {
+                isMutexBlocked = false;
+                return;
+            }
+
             if (pageIdx < this.lastPageIdx) { // scroll to top
                 this.handlers[pageIdx].onstart();
                 for (let i = pageIdx + 1; i < this.lastPageIdx; i++) { // if you scroll over many pages

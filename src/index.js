@@ -1,14 +1,15 @@
 import './styles/global.styl';
 import './styles/main.styl';
+import './styles/carousel3D.styl';
 import './styles/formControls.styl';
 import './styles/popupMessages.styl';
 
 // import { registerSW } from './modules/sw-installer.js';
 import App from './app';
 
-// const API_BASE_URL = 'https://api.mail.liokor.ru';
-const API_BASE_URL = 'https://mail.liokor.ru/api';
-const APP_TITLE = 'Resume';
+// const API_BASE_URL = 'https://your-site/api';
+const API_BASE_URL = undefined;
+const APP_TITLE = 'Landing';
 
 const headContentHTML = '<link rel="icon" href="/images/favicon.ico" type="image/x-icon">';
 const baseContentHTML = `<div id="app" class="fullsize"></div>`;

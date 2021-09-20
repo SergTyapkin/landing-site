@@ -2,18 +2,66 @@ import Handlebars from 'handlebars/dist/cjs/handlebars';
 import PageScroller from '../modules/pageScroller';
 
 const html = `
-<div id="block-2" class="block-2 absolute-wrapper landing-block">
-    <div id="block-2-circle-plate" class="block-2-circle plate hide"></div>
-    <svg id="block-2-circle" class="lighting-stroke block-2-circle" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
-    <svg id="block-2-circle-shadow" class="lighting-stroke block-2-circle" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
-</div>
-
-<div id="block-1" class="block-1 absolute-wrapper landing-block">
+<div id="block-1" class="block-1 absolute-wrapper">
     <div id="block-1-left" class="block-1-plate left fullsize"></div>
     <div id="block-1-right" class="block-1-plate right fullsize"></div>
     <div id="block-1-line-left" class="divide-line left animate"></div>
     <div id="block-1-line-right" class="divide-line right animate"></div>
 </div>
+
+<div id="block-2" class="block-2 absolute-wrapper">
+    <svg id="block-2-circle" class="lighting-stroke svg-circle hide" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
+    <svg id="block-2-circle-shadow" class="lighting-stroke svg-circle hide" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
+</div>
+
+<div id="block-3" class="block-3 absolute-wrapper">
+    <div id="block-3-carousel" class="carousel-3d fullsize hide">
+        <figure id="block-3-carousel-figure-1">
+            <img src="images/photo-1.jpg" alt=""/>
+            <img src="images/photo-2.jpg" alt=""/>
+            <img src="images/photo-3.jpg" alt=""/>
+            <img src="images/photo-4.jpeg" alt=""/>
+            <img src="images/photo-5.jpg" alt=""/>
+            <img src="images/photo-6.jpg" alt=""/>
+        </figure>
+        <figure id="block-3-carousel-figure-2">
+            <img src="images/photo-1.jpg" alt=""/>
+            <img src="images/photo-2.jpg" alt=""/>
+            <img src="images/photo-3.jpg" alt=""/>
+            <img src="images/photo-4.jpeg" alt=""/>
+            <img src="images/photo-5.jpg" alt=""/>
+            <img src="images/photo-6.jpg" alt=""/>
+        </figure>
+        <figure id="block-3-carousel-figure-3">
+            <img src="images/photo-1.jpg" alt=""/>
+            <img src="images/photo-2.jpg" alt=""/>
+            <img src="images/photo-3.jpg" alt=""/>
+            <img src="images/photo-4.jpeg" alt=""/>
+            <img src="images/photo-5.jpg" alt=""/>
+            <img src="images/photo-6.jpg" alt=""/>
+        </figure>
+    </div>
+</div>
+
+<div id="block-4" class="block-4 absolute-wrapper">
+    <svg id="block-4-spikes" class="block-4-spikes fullsize hide" preserveAspectRatio="none" viewBox="0 0 100 100">
+        <radialGradient id="radial-grad" fx="50%" fy="100%" cy="0.5" r="0.7">
+            <stop offset="50%" stop-color="white" stop-opacity="0.8"></stop>  
+            <stop offset="100%" stop-color="white" stop-opacity="0.0"></stop>
+        </radialGradient>
+        <path d="M 0 100 l 10 -20 l -5 -10 l 2 -3 l 1 -4 l 4 -3 l 1 -6 l -2 -7 l 1 -4 l -2 -5 l 10 -4 l -4 -3 l 3 -8 l 8 -2 l 1 -4 l 3 4 l 5 -9 l 1 3 l 4 2 l 3 -6 l 5 -2 l 4 10 l 2 5 l 4 2 l 2 -12 l 2 -3 l 5 8 l 1 10 l 4 -4 l 7 -2 l -3 4 l 2 5 l 8 1 l 2 5 l -5 3 l 3 2 l 6 5 l -3 2 l -1 3 l -2 5 l 3 7 l 3 1 l -3 5 l 7 8 l -2 3 L 100 100 L 100 0 L 0 0 Z" fill="url(#radial-grad)"/>
+    </svg>
+    <svg class="block-4-text-path" viewBox="0 -5 100 610" xmlns="//www.w3.org/2000/svg" xmlns:xlink="//www.w3.org/1999/xlink">
+        <path id="text-path" d="M 0 550 v -500 c 0 -70, 100 -70, 100 0 v 500 c 0 70, -100 70, -100 0 Z"/>
+        <text id="block-4-text-path" dy="0px" dx="0px">
+            <textPath xlink:href="#text-path">
+                SOME TEXT
+            </textPath>
+        </text>
+    </svg>
+</div>
+
+<!--block-4 is the same as block-2 and html from block-2 uses in js-->
 `;
 
 const divideLinesWidth = 1.5;
@@ -53,9 +101,20 @@ export async function handler(element, app) {
     const block1LineLeft = document.getElementById('block-1-line-left');
     const block1LineRight = document.getElementById('block-1-line-right');
 
+    const block2 = document.getElementById('block-2');
     const block2Circle = document.getElementById('block-2-circle');
     const block2CircleShadow = document.getElementById('block-2-circle-shadow');
-    const block2CirclePlate = document.getElementById('block-2-circle-plate');
+
+    const block3Carousel = document.getElementById('block-3-carousel');
+    const block3CarouselFigure1 = document.getElementById('block-3-carousel-figure-1');
+    const block3CarouselFigure2 = document.getElementById('block-3-carousel-figure-2');
+    const block3CarouselFigure3 = document.getElementById('block-3-carousel-figure-3');
+
+    const block4 = document.getElementById('block-4');
+    const block4Spikes = document.getElementById('block-4-spikes');
+    const block4TextPath = document.getElementById('block-4-text-path');
+    const block4Circle = document.getElementById('block-4-circle');
+    const block4CircleShadow = document.getElementById('block-4-circle-shadow');
 
     setTimeout(() => block1LineLeft.classList.remove('animate'), 500);
     setTimeout(() => block1LineRight.classList.remove('animate'), 750);
@@ -105,35 +164,93 @@ export async function handler(element, app) {
             onstart: () => {
                 block2Circle.classList.remove('hide');
                 block2CircleShadow.classList.remove('hide');
-                block2CirclePlate.classList.add('hide');
             },
             onprogress: (progress) => {
-                block2Circle.style.strokeDasharray = 2 * Math.PI * block2CircleViewPortDiameter * progress + ' 1000';
-                block2CircleShadow.style.strokeDasharray = 2 * Math.PI * block2CircleViewPortDiameter * progress + ' 1000';
+                block2CircleShadow.style.strokeDasharray = block2Circle.style.strokeDasharray = 2 * Math.PI * block2CircleViewPortDiameter * progress + ' 1000';
             },
             onendTop: () => {
                 block2Circle.classList.add('hide');
                 block2CircleShadow.classList.add('hide');
             },
             onendBottom: () => {
-                block2CirclePlate.classList.remove('hide');
             }
         },
         { // circle scales over the screen
             onstart: () => {
                 block2Circle.classList.remove('hide');
                 block2CircleShadow.classList.remove('hide');
+                block2Circle.classList.add('filled');
             },
             onprogress: (progress) => {
-                block2Circle.style.transform = `rotate(-90deg) scale(${1 + block2CircleMaxScale * progress})`;
-                block2CircleShadow.style.transform = `rotate(-90deg) scale(${1 + block2CircleMaxScale * progress})`;
-                block2CirclePlate.style.transform = `rotate(-90deg) scale(${1 + block2CircleMaxScale * progress})`;
+                block2CircleShadow.style.transform = block2Circle.style.transform = `rotate(-90deg) scale(${1 + block2CircleMaxScale * progress})`;
+            },
+            onendTop: () => {
+                block2Circle.classList.remove('filled');
+            },
+            onendBottom: () => {
+                block2CircleShadow.classList.add('hide');
+            }
+        },
+
+        // --- Block 3
+        { // carousel turns and moves down
+            onstart: () => {
+                block3Carousel.classList.remove('hide');
+            },
+            onprogress: (progress) => {
+                block3CarouselFigure1.style.transform = `rotateY(${130 + 720 * progress}deg) translateY(${-160 + 255 * progress}%) translateX(${25 - 50 * progress}%)`;
+                block3CarouselFigure2.style.transform = `rotateY(${270 - 720 * progress}deg) translateY(${-75 + 200 * progress}%) translateX(${-150 + 300 * progress}%)`;
+                block3CarouselFigure3.style.transform = `rotateY(${180 + 720 * progress}deg) translateY(${-25 + 225 * progress}%) translateX(${150 - 200 * progress}%)`;
+            },
+            onendTop: () => {
+                block3Carousel.classList.add('hide');
+            },
+            onendBottom: () => {
+                block3Carousel.classList.add('hide');
+            }
+        },
+
+        // --- Block 4
+        { // circle scales inside the screen
+            onstart: () => {
+                block2Circle.classList.remove('hide');
+                block2CircleShadow.classList.remove('hide');
+                block2Circle.classList.add('filled');
+            },
+            onprogress: (progress) => {
+                progress = 1 - progress;
+                block2CircleShadow.style.transform = block2Circle.style.transform = `rotate(-90deg) scale(${1 + block2CircleMaxScale * progress})`;
+            },
+            onendTop: () => {
+                block2CircleShadow.classList.add('hide');
+            },
+            onendBottom: () => {
+                block2Circle.classList.remove('filled');
+            }
+        },
+        { // text moves around circle
+            onstart: () => {
+                block4Spikes.classList.remove('hide');
+            },
+            onprogress: (progress) => {
+                block4TextPath.setAttribute('dx', 500 * progress + 'px');
+            },
+            onendTop: () => {
+                block4Spikes.classList.add('hide');
+            },
+            onendBottom: () => {
+            }
+        },
+        { // page scrolls down and text continue to moves down
+            onstart: () => {
+            },
+            onprogress: (progress) => {
+                block4TextPath.setAttribute('dx', 500 + 1000 * progress + 'px');
+                block2.style.top = block4.style.top = -100 * progress + 'vh';
             },
             onendTop: () => {
             },
             onendBottom: () => {
-                block2Circle.classList.add('hide');
-                block2CircleShadow.classList.add('hide');
             }
         }
     ]);
