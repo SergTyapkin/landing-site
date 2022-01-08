@@ -14,11 +14,11 @@
     clip-path: inset(var(--clip-top) 0 var(--clip-bottom) 0);
 }
 .stack.activated span {
-    animation: stack 300ms cubic-bezier(.46,.29,0,1.24) 1 backwards calc(var(--index) * 120ms), glitch 2s ease infinite 2s alternate-reverse;
+    animation: stack 300ms cubic-bezier(.46,.29,0,1.24) 1 backwards calc(var(--index) * 120ms), glitch 2s ease infinite 0.2s alternate-reverse;
 }
 
-.stack span:nth-child(odd) { --glitch-translate: 16px; }
-.stack span:nth-child(even) { --glitch-translate: -10px; }
+.stack span:nth-child(odd) { --glitch-translate: 2px; }
+.stack span:nth-child(even) { --glitch-translate: -3px; }
 
 @keyframes stack {
     0% {
@@ -43,10 +43,24 @@
 @keyframes glitch {
     0% {
         text-shadow: -2px 3px 0 red, 2px -3px 0 blue;
-        transform: translate(var(--glitch-translate));
+        transform: translate(calc(var(--glitch-translate) / 3 * 2));
     }
     2% {
         text-shadow: 2px -3px 0 red, -2px 3px 0 blue;
     }
-    4%, 100% {  text-shadow: none; transform: none; }
+    20% {
+        text-shadow: -3px -1px 0 red, 3px 3px 0 blue;
+        transform: translate(calc(var(--glitch-translate) / -2));
+    }
+    22% {
+        text-shadow: -3px -1px 0 red, 3px 3px 0 blue;
+    }
+    90% {
+        text-shadow: -4px 1px 0 red, 2px -2px 0 blue;
+        transform: translate(var(--glitch-translate));
+    }
+    92% {
+        text-shadow: 4px -2px 0 red, 3px 3px 0 blue;
+    }
+    4%, 24%, 94%, 100% {  text-shadow: none; transform: none; }
 }
