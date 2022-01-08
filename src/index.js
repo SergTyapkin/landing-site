@@ -3,6 +3,7 @@ import './styles/main.styl';
 import './styles/carousel3D.styl';
 import './styles/formControls.styl';
 import './styles/popupMessages.styl';
+import './styles/glitch.styl';
 
 // import { registerSW } from './modules/sw-installer.js';
 import App from './app';

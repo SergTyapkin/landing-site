@@ -10,8 +10,9 @@ const html = `
 </div>
 
 <div id="block-2" class="block-2 absolute-wrapper">
-    <svg id="block-2-circle" class="lighting-stroke svg-circle hide" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
-    <svg id="block-2-circle-shadow" class="lighting-stroke svg-circle hide" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
+    <svg id="block-2-circle" class="lighting-stroke circle centered hide" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
+    <svg id="block-2-circle-shadow" class="lighting-stroke circle centered hide" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
+    <div id="block-2-circle-div" class="lighting-stroke circle centered hide"></div>
 </div>
 
 <div id="block-3" class="block-3 absolute-wrapper">
@@ -51,16 +52,41 @@ const html = `
         </radialGradient>
         <path d="M 0 100 l 10 -20 l -5 -10 l 2 -3 l 1 -4 l 4 -3 l 1 -6 l -2 -7 l 1 -4 l -2 -5 l 10 -4 l -4 -3 l 3 -8 l 8 -2 l 1 -4 l 3 4 l 5 -9 l 1 3 l 4 2 l 3 -6 l 5 -2 l 4 10 l 2 5 l 4 2 l 2 -12 l 2 -3 l 5 8 l 1 10 l 4 -4 l 7 -2 l -3 4 l 2 5 l 8 1 l 2 5 l -5 3 l 3 2 l 6 5 l -3 2 l -1 3 l -2 5 l 3 7 l 3 1 l -3 5 l 7 8 l -2 3 L 100 100 L 100 0 L 0 0 Z" fill="url(#radial-grad)"/>
     </svg>
-    <div id="block-4-inside-circle" class="inside-circle"></div>
-    <div id="block-4-vertical-line" class="vertical-line"></div>
-    <svg class="text-path" viewBox="0 -5 100 610" xmlns="//www.w3.org/2000/svg" xmlns:xlink="//www.w3.org/1999/xlink">
-        <path id="text-path" d="M 0 550 v -500 c 0 -70, 100 -70, 100 0 v 500 c 0 70, -100 70, -100 0 Z"/>
+    <svg id="block-4-outer-text-path" class="text-path hide" viewBox="0 -5 100 610" xmlns="//www.w3.org/2000/svg" xmlns:xlink="//www.w3.org/1999/xlink">
+        <path id="text-path" d="M 0 300 v -250 c 0 -70, 100 -70, 100 0 v 500 c 0 70, -100 70, -100 0 Z"/>
         <text id="block-4-text-path" dy="0px" dx="0px">
             <textPath xlink:href="#text-path">
                 SOME TEXT
             </textPath>
         </text>
     </svg>
+    <div id="block-4-inside-circle" class="inside-circle"></div>
+    <div id="block-4-vertical-line" class="vertical-line"></div>
+    
+    <div class="info-block">
+        <div id="block-4-info-1" class="right closed">
+            <div class="text">Some more text there about something with important information about our first working area</div>    
+            <div class="underline"></div>    
+        </div>
+        <div id="block-4-info-2" class="left closed">
+            <div class="text">Some more text there about something with important information about our second working area</div>    
+            <div class="underline"></div>    
+        </div>
+        <div id="block-4-info-3" class="right closed">
+            <div class="text">Some more text there about something with important information about our third working area</div>    
+            <div class="underline"></div>    
+        </div>
+        <div id="block-4-info-4" class="left closed">
+            <div class="text">Some more text there about something with important information about our fourth working area</div>    
+            <div class="underline"></div>    
+        </div>
+    </div>
+    
+    <div id="block-4-go-text" class="text centered hide stack" style="--stacks: 3;">
+        <span style="--index: 0;">Р*Б*ТАЙ Б***Ь!</span>
+        <span style="--index: 1;">Р*Б*ТАЙ Б***Ь!</span>
+        <span style="--index: 2;">Р*Б*ТАЙ Б***Ь!</span>
+    </div>
 </div>
 `;
 
@@ -74,6 +100,15 @@ const block2CircleDiameter = 150;
 const block2CircleMaxScale = Math.max(document.documentElement.clientWidth, document.documentElement.clientHeight) / block2CircleDiameter * 1.5;
 
 const block4CircleMinDiameter = 10;
+const block4CircleMaxDiameter = 300;
+const block4CircleMaxestDiameter = 500;
+const block4LineMinWidth = 4;
+const block4LineMaxWidth = 10;
+const block4CircleMinWidth = 1;
+const block4CircleMaxWidth = 5;
+const block4CircleMaxestWidth = 10;
+const block4InfoHeight = 300;
+
 /**
  * Renders profile page and "activating" it's js
  *
@@ -106,6 +141,7 @@ export async function handler(element, app) {
     const block2 = document.getElementById('block-2');
     const block2Circle = document.getElementById('block-2-circle');
     const block2CircleShadow = document.getElementById('block-2-circle-shadow');
+    const block2CircleDiv = document.getElementById('block-2-circle-div');
 
     const block3Carousel = document.getElementById('block-3-carousel');
     const block3CarouselFigure1 = document.getElementById('block-3-carousel-figure-1');
@@ -114,23 +150,33 @@ export async function handler(element, app) {
 
     const block4 = document.getElementById('block-4');
     const block4Spikes = document.getElementById('block-4-spikes');
+    const block4OuterTextPath = document.getElementById('block-4-outer-text-path');
     const block4TextPath = document.getElementById('block-4-text-path');
     const block4VerticalLine = document.getElementById('block-4-vertical-line');
     const block4InsideCircle = document.getElementById('block-4-inside-circle');
-    const block4Circle = document.getElementById('block-4-circle');
-    const block4CircleShadow = document.getElementById('block-4-circle-shadow');
+    const block4Info1 = document.getElementById('block-4-info-1');
+    const block4Info2 = document.getElementById('block-4-info-2');
+    const block4Info3 = document.getElementById('block-4-info-3');
+    const block4Info4 = document.getElementById('block-4-info-4');
+    const block4GoText = document.getElementById('block-4-go-text');
 
     setTimeout(() => block1LineLeft.classList.remove('animate'), 500);
     setTimeout(() => block1LineRight.classList.remove('animate'), 750);
 
+    function show(element) {
+        element.classList.remove('hide');
+    }
+    function hide(element) {
+        element.classList.add('hide');
+    }
     const Scroller = new PageScroller();
     Scroller.setHandlers([
         // --- Block 1
         { // left plate goes to left
             duration: 1,
             onstart: () => {
-                block1LineLeft.classList.remove('hide');
-                block1Left.classList.remove('hide');
+                show(block1LineLeft);
+                show(block1Left);
             },
             onprogress: (progress) => {
                 const reProgress = 1 - progress;
@@ -141,15 +187,15 @@ export async function handler(element, app) {
             onendTop: () => {
             },
             onendBottom: () => {
-                block1LineLeft.classList.add('hide');
-                block1Left.classList.add('hide');
+                hide(block1LineLeft);
+                hide(block1Left);
             }
         },
         { // right plate goes to right
             duration: 1,
             onstart: () => {
-                block1LineRight.classList.remove('hide');
-                block1Right.classList.remove('hide');
+                show(block1LineRight);
+                show(block1Right);
             },
             onprogress: (progress) => {
                 progress = 100 / (50 + divideLinesBetween / 2 - divideLinesXOffset) * progress;
@@ -160,8 +206,8 @@ export async function handler(element, app) {
             onendTop: () => {
             },
             onendBottom: () => {
-                block1LineRight.classList.add('hide');
-                block1Right.classList.add('hide');
+                hide(block1LineRight);
+                hide(block1Right);
             }
         },
 
@@ -169,34 +215,39 @@ export async function handler(element, app) {
         { // circle stroke fills around
             duration: 1,
             onstart: () => {
-                block2Circle.classList.remove('hide');
-                block2CircleShadow.classList.remove('hide');
+                show(block2Circle);
+                show(block2CircleShadow);
             },
             onprogress: (progress) => {
                 block2CircleShadow.style.strokeDasharray = block2Circle.style.strokeDasharray = 2 * Math.PI * block2CircleViewPortDiameter * progress + ' 1000';
             },
             onendTop: () => {
-                block2Circle.classList.add('hide');
-                block2CircleShadow.classList.add('hide');
+                hide(block2Circle);
+                hide(block2CircleShadow);
             },
             onendBottom: () => {
+                hide(block2Circle);
+                hide(block2CircleShadow);
             }
         },
         { // circle scales over the screen
             duration: 1,
             onstart: () => {
-                block2Circle.classList.remove('hide');
-                block2CircleShadow.classList.remove('hide');
+                show(block2CircleDiv);
+                block2CircleDiv.classList.add('filled');
                 block2Circle.classList.add('filled');
             },
             onprogress: (progress) => {
-                block2CircleShadow.style.transform = block2Circle.style.transform = `rotate(-90deg) translate(50%, -50%) scale(${1 + block2CircleMaxScale * progress})`;
+                block2CircleDiv.style.transform = block2CircleDiv.style.transform = `rotate(-90deg) translate(50%, -50%) scale(${1 + block2CircleMaxScale * progress})`;
             },
             onendTop: () => {
+                hide(block2CircleDiv);
+                block2CircleDiv.classList.remove('filled');
+                block2Circle.classList.remove('filled');
                 block2Circle.classList.remove('filled');
             },
             onendBottom: () => {
-                block2CircleShadow.classList.add('hide');
+                block2Circle.classList.remove('filled');
             }
         },
 
@@ -204,7 +255,7 @@ export async function handler(element, app) {
         { // carousel turns and moves down
             duration: 5,
             onstart: () => {
-                block3Carousel.classList.remove('hide');
+                show(block3Carousel);
             },
             onprogress: (progress) => {
                 block3CarouselFigure1.style.transform = `rotateY(${130 + 720 * progress}deg) translateY(${-160 + 255 * progress}%) translateX(${25 - 50 * progress}%)`;
@@ -212,10 +263,10 @@ export async function handler(element, app) {
                 block3CarouselFigure3.style.transform = `rotateY(${180 + 720 * progress}deg) translateY(${-25 + 225 * progress}%) translateX(${150 - 200 * progress}%)`;
             },
             onendTop: () => {
-                block3Carousel.classList.add('hide');
+                hide(block3Carousel);
             },
             onendBottom: () => {
-                block3Carousel.classList.add('hide');
+                hide(block3Carousel);
             }
         },
 
@@ -223,49 +274,165 @@ export async function handler(element, app) {
         { // circle scales inside the screen
             duration: 1,
             onstart: () => {
-                block2Circle.classList.remove('hide');
-                block2CircleShadow.classList.remove('hide');
-                block2Circle.classList.add('filled');
+                show(block2CircleDiv);
+                block2CircleDiv.classList.add('filled');
             },
             onprogress: (progress) => {
                 block4InsideCircle.style.opacity = progress;
-                block2CircleShadow.style.transform = block2Circle.style.transform = `rotate(-90deg) translate(50%, -50%) scale(${1 + block2CircleMaxScale * (1 - progress)})`;
+                block2CircleDiv.style.transform = block2CircleDiv.style.transform = `rotate(-90deg) translate(50%, -50%) scale(${1 + block2CircleMaxScale * (1 - progress)})`;
             },
             onendTop: () => {
-                block2CircleShadow.classList.add('hide');
             },
             onendBottom: () => {
-                block2Circle.classList.remove('filled');
+                block2CircleDiv.classList.remove('filled');
             }
         },
         { // text moves around circle and inside circle moves to center
             duration: 1,
             onstart: () => {
-                block4Spikes.classList.remove('hide');
+                show(block4Spikes);
+                show(block4OuterTextPath);
             },
             onprogress: (progress) => {
                 block4TextPath.setAttribute('dx', 500 * progress + 'px');
                 block4InsideCircle.style.height = block4InsideCircle.style.width = block2CircleDiameter - (block2CircleDiameter - block4CircleMinDiameter) * progress + 'px';
             },
             onendTop: () => {
-                block4Spikes.classList.add('hide');
+                hide(block4Spikes);
+                hide(block4OuterTextPath);
+            },
+            onendBottom: () => {
+                hide(block4OuterTextPath);
+            }
+        },
+        { // page scrolls down and text continue to moves down, vertical line starts moving
+            duration: 0.75,
+            onstart: () => {
+                show(block4VerticalLine);
+            },
+            onprogress: (progress) => {
+                const lineScroll = 1.5 * block4InfoHeight * progress;
+                const pageScroll = block4InfoHeight * progress;
+                block4TextPath.setAttribute('dx', 500 + 750 * progress + 'px');
+                block2.style.top = block4.style.top = -pageScroll + 'px';
+                block4VerticalLine.style.height = block4CircleMinDiameter / 2 + lineScroll + 'px';
+                block4InsideCircle.style.marginTop = lineScroll + 'px';
+            },
+            onendTop: () => {
+                hide(block4VerticalLine);
             },
             onendBottom: () => {
             }
         },
-        { // page scrolls down and text continue to moves down
-            duration: 3,
+        { // page scrolls down and line moves down and to side
+            duration: 0.5,
             onstart: () => {
-                block4VerticalLine.classList.remove('hide');
+                block4Info1.classList.remove('closed');
             },
             onprogress: (progress) => {
-                block4TextPath.setAttribute('dx', 500 + 1000 * progress + 'px');
-                block2.style.top = block4.style.top = -100 * progress + '%';
-                block4VerticalLine.style.height = `calc(${block4CircleMinDiameter / 2}px + ${100 * progress}%)`;
-                block4InsideCircle.style.top = 50 + 100 * progress + '%';
+                progress += 1;
+                const lineScroll = block4InfoHeight * (progress + 0.5);
+                const pageScroll = block4InfoHeight * progress;
+                block2.style.top = block4.style.top = -pageScroll + 'px';
+                block4VerticalLine.style.height = block4CircleMinDiameter / 2 + lineScroll + 'px';
+                block4InsideCircle.style.marginTop = lineScroll + 'px';
             },
             onendTop: () => {
-                block4VerticalLine.classList.add('hide');
+                block4Info1.classList.add('closed');
+            },
+            onendBottom: () => {
+            }
+        },
+        { // page scrolls down and line moves down and to side
+            duration: 0.5,
+            onstart: () => {
+                block4Info2.classList.remove('closed');
+            },
+            onprogress: (progress) => {
+                progress += 2;
+                const lineScroll = block4InfoHeight * (progress + 0.5);
+                const pageScroll = block4InfoHeight * progress;
+                block2.style.top = block4.style.top = -pageScroll + 'px';
+                block4VerticalLine.style.height = block4CircleMinDiameter / 2 + lineScroll + 'px';
+                block4InsideCircle.style.marginTop = lineScroll + 'px';
+            },
+            onendTop: () => {
+                block4Info2.classList.add('closed');
+            },
+            onendBottom: () => {
+            }
+        },
+        { // page scrolls down and line moves down and to side
+            duration: 0.5,
+            onstart: () => {
+                block4Info3.classList.remove('closed');
+            },
+            onprogress: (progress) => {
+                progress += 3;
+                const lineScroll = block4InfoHeight * (progress + 0.5);
+                const pageScroll = block4InfoHeight * progress;
+                block2.style.top = block4.style.top = -pageScroll + 'px';
+                block4VerticalLine.style.height = block4CircleMinDiameter / 2 + lineScroll + 'px';
+                block4InsideCircle.style.marginTop = lineScroll + 'px';
+            },
+            onendTop: () => {
+                block4Info3.classList.add('closed');
+            },
+            onendBottom: () => {
+            }
+        },
+        { // page scrolls down and line moves down and to side
+            duration: 1,
+            onstart: () => {
+                block4Info4.classList.remove('closed');
+                show(block4OuterTextPath);
+            },
+            onprogress: (progress) => {
+                const lineScroll = block4InfoHeight * (progress * 2 + 4.5);
+                const pageScroll = 2.5 * block4InfoHeight * progress + block4InfoHeight * 4;
+                block4TextPath.setAttribute('dx', 500 + 1000 * progress + 'px');
+                block4OuterTextPath.style.marginTop = block2CircleDiameter * (-1 + 2 * progress) + 'px';
+                block2.style.top = block4.style.top = -pageScroll + 'px';
+                block4VerticalLine.style.height = block4CircleMinDiameter / 2 + lineScroll + 'px';
+                block4InsideCircle.style.marginTop = lineScroll + 'px';
+                block4InsideCircle.style.height = block4InsideCircle.style.width = block4CircleMinDiameter + (block4CircleMaxDiameter - block4CircleMinDiameter) * progress + 'px';
+                block4InsideCircle.style.borderWidth = block4CircleMinWidth + (block4CircleMaxWidth - block4CircleMinWidth) * progress + 'px';
+            },
+            onendTop: () => {
+                block4Info4.classList.add('closed');
+                hide(block4OuterTextPath);
+            },
+            onendBottom: () => {
+            }
+        },
+        { // page scrolled to end, make symbol "I/O"
+            duration: 0.01,
+            onstart: () => {
+                const lineScroll = block4InfoHeight * 6.5;
+                const pageScroll = block4InfoHeight * 6.5;
+                block2.style.top = block4.style.top = -pageScroll + 'px';
+                block4VerticalLine.classList.add('bouncy');
+                block4InsideCircle.style.marginTop = lineScroll + 'px';
+                block4InsideCircle.style.height = block4InsideCircle.style.width = block4CircleMaxestDiameter + 'px';
+                block4VerticalLine.style.marginTop = lineScroll - 1.2 * block4InfoHeight + 'px';
+                block4VerticalLine.style.height = 33 + '%';
+                block4InsideCircle.style.borderWidth = block4CircleMaxestWidth + 'px';
+                block4VerticalLine.style.width = block4LineMaxWidth + 'px';
+                block4VerticalLine.style.borderRadius = block4LineMaxWidth / 2 + 'px';
+                show(block4GoText);
+                block4GoText.classList.add('activated');
+                block4InsideCircle.classList.add('button');
+            },
+            onprogress: (progress) => {
+            },
+            onendTop: () => {
+                block4VerticalLine.style.marginTop = -block4LineMinWidth / 2 + 'px';
+                block4VerticalLine.style.width = block4LineMinWidth + 'px';
+                block4VerticalLine.style.borderRadius = block4LineMinWidth / 2 + 'px';
+                block4VerticalLine.classList.remove('bouncy');
+                hide(block4GoText);
+                block4GoText.classList.remove('activated');
+                block4InsideCircle.classList.remove('button');
             },
             onendBottom: () => {
             }

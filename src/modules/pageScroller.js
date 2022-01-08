@@ -39,23 +39,23 @@ export default class PageScroller {
             }
 
             if (pageIdx < this.lastPageIdx) { // scroll to top
-                this.handlers[pageIdx].onstart();
                 for (let i = pageIdx + 1; i < this.lastPageIdx; i++) { // if you scroll over many pages
-                    this.handlers[i].onstart();
                     this.handlers[i].onprogress(0);
                     this.handlers[i].onendTop();
+                    this.handlers[i].onstart();
                 }
                 this.handlers[this.lastPageIdx].onprogress(0);
                 this.handlers[this.lastPageIdx].onendTop();
-            } else if (pageIdx > this.lastPageIdx) { // scroll to bottom
                 this.handlers[pageIdx].onstart();
+            } else if (pageIdx > this.lastPageIdx) { // scroll to bottom
                 for (let i = this.lastPageIdx + 1; i < pageIdx; i++) { // if you scroll over many pages
-                    this.handlers[i].onstart();
                     this.handlers[i].onprogress(1);
                     this.handlers[i].onendBottom();
+                    this.handlers[i].onstart();
                 }
                 this.handlers[this.lastPageIdx].onprogress(1);
                 this.handlers[this.lastPageIdx].onendBottom();
+                this.handlers[pageIdx].onstart();
             }
 
             const progress = (this.element.scrollTop - this.element.clientHeight * prevPagesDuration) / (this.element.clientHeight * curPageDuration);

@@ -5,11 +5,20 @@ divide-lines-width = 1.5%
 divide-lines-between = 1%
 divide-lines-x-offset = 7%
 
+block-1-circle-color = empColor2
 block-2-circle-size = 150px
+block-2-fill-color = #111111
 
 block-4-text-path-width = 300px
 block-4-text-path-height = 1800px
 block-4-vertical-line-width = 4px
+
+block-4-line-color = empColor2
+block-4-info-underline-width = 2px
+block-4-info-height = 300px
+block-4-circle-size-max = 550px
+
+bouncy = cubic-bezier(0.34,1.61,0.7,1)
 
 .absolute-wrapper
     position relative
@@ -62,19 +71,21 @@ block-4-vertical-line-width = 4px
 .block-2 > *
     stroke empColor2
     background empColor2
+    border-color empColor2
 .block-2
-    .svg-circle
-        transform rotate(-90deg) translate(50%, -50%) // js animable
+    .circle
         width block-2-circle-size
         height block-2-circle-size
-        top 50%
-        left 50%
+    .circle.centered
+        transform rotate(-90deg) translate(50%, -50%) // js animable
+    svg.circle, .lighting-stroke
         stroke-dasharray 0 1000 // js animable
-        transition fill 0.5s ease
-    .svg-circle.filled
-        fill #111111
-    .circle.plate.show
-        opacity 1
+        background transparent // css animable
+        transition fill 0.5s ease, background-color 0.5s ease
+    svg.circle.filled
+        fill block-2-fill-color
+    div.filled
+        background block-2-fill-color
 
 // ------- Block 4
 .block-4
@@ -85,7 +96,8 @@ block-4-vertical-line-width = 4px
         overflow visible
         top 50%
         left 50%
-        transform translate(-(block-4-text-path-width / 2), -(block-4-text-path-width / 2))
+        margin-top -(block-4-text-path-width / 2)
+        margin-left -(block-4-text-path-width / 2)
         letter-spacing 10px
     .text-path path
         fill none
@@ -98,34 +110,112 @@ block-4-vertical-line-width = 4px
         height block-2-circle-size //js animable
         width  block-2-circle-size //js animable
         border-radius 50%
-        border 1px empColor2 solid
+        border 1px block-4-line-color solid // js animable
         top 50% // js animable
         left 50%
         transform translate(-50%, -50%)
+        transition height 0.3s ease, width 0.1s ease, border-width 0.2s bouncy;
+    .inside-circle.button
+        transition height 0.3s ease, width 0.1s ease, border-width 0.2s bouncy, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease
+        cursor pointer
+        pointer-events all
+    .inside-circle.button ~ .text.centered
+        transition letter-spacing 0.25s ease, font-size 0.25s ease
+    .inside-circle.button:hover
+        color textColor1
+        background colorShadow
+        box-shadow 0 0 10px colorShadow, 0 0 10px empColor2 inset
+    .inside-circle.button:hover ~ .text.centered
+        letter-spacing 10px
+        font-size 42px
 
     .vertical-line
         top 50%
         left 50%
-        transform translate(-(block-4-vertical-line-width / 2), -(block-4-vertical-line-width / 2))
-        width block-4-vertical-line-width
-        background empColor2
-        box-shadow 0 0 5px empColor2
+        margin-top -(block-4-vertical-line-width / 2)
+        margin-left -(block-4-vertical-line-width / 2)
+        width block-4-vertical-line-width // js animable
+        background block-4-line-color
+        box-shadow 0 0 5px block-4-line-color
         height 0 //js animable
         border-radius (block-4-vertical-line-width / 2)
+        transition: width 0.2s ease;
+    .vertical-line.bouncy
+        transition: width 0.2s bouncy, margin-top 0.2s bouncy, height 0.15s bouncy;
 
+    .text.centered
+        position fixed
+        font-size 40px
+        letter-spacing 8px
+        color textColor1
+        font-weight bold
+        margin-top 1.5%
+
+    .info-block > *
+        height block-4-info-height
+        width 35%
+        display flex
+        flex-direction column
+        justify-content flex-end
+    .info-block
+        top 50%
+        left 0
+        width 100%
+        margin-top (block-4-info-height / 2)
+        .right
+            margin-left 50%
+            margin-right auto
+            text-align left
+            .underline
+                background linear-gradient(90deg, block-4-line-color 50%, transparent 100%)
+                align-self flex-start
+        .left
+            margin-right 50%
+            margin-left auto
+            text-align right
+            .underline
+                background linear-gradient(90deg, transparent 0%, block-4-line-color 50%)
+                align-self flex-end
+        .text
+            font-size 30px
+            color empColor5
+            padding 20px
+            opacity 1 // css animable
+            transition opacity 0.5s ease
+        .underline
+            height block-4-info-underline-width
+            width 100% // css animable
+            transition width 0.5s ease
+        .closed
+            .text
+                opacity 0
+            .underline
+                width 0
 
 // ------- All
-.lighting-stroke, .lighting-stroke + svg.lighting-stroke
+.lighting-stroke
     background none
-    fill none
+    fill transparent
     stroke-width 3px
     overflow visible
     stroke-linecap round
 .lighting-stroke + svg.lighting-stroke
     filter blur(10px)
+div.lighting-stroke
+    box-shadow 0 0 3px colorShadow, 0 0 3px colorShadow inset,
+               0 0 12px empColor2, 0 0 12px empColor2 inset
+    border-width 5px
+    border-style: solid
+    border-radius 50%
 
 .landing > div .hide
     opacity 0
+
+.centered
+    transform translate(-50%, -50%)
+    top 50%
+    left 50%
+
 
 @keyframes roll-down-divide-line-left
     0%
