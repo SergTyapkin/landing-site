@@ -13,7 +13,7 @@ import * as main from './views/main.html.js';
 import * as view404 from './views/404.html.js';
 
 const DEFAULT_AVATAR_URL = '/images/default-avatar.jpg';
-const DEFAULT_BACKGROUND = 'linear-gradient(30deg, #153131 0%, #2e143c 60%, #5d4e25 100%)';
+const DEFAULT_BACKGROUND = 'linear-gradient(30deg, #110612 5%, #153131 15%, #2e143c 60%, #5d4e25 100%)';
 
 export default class App {
     constructor(name, apiUrl, elId) {

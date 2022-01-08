@@ -99,6 +99,7 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
         margin-top -(block-4-text-path-width / 2)
         margin-left -(block-4-text-path-width / 2)
         letter-spacing 10px
+        font-size calc(0.5em + 1vw)
     .text-path path
         fill none
 
@@ -123,11 +124,11 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
         transition letter-spacing 0.25s ease, font-size 0.25s ease
     .inside-circle.button:hover
         color textColor1
-        background colorShadow
-        box-shadow 0 0 10px colorShadow, 0 0 10px empColor2 inset
+        background #FFD00010
+        box-shadow 0 0 20px empColor2, 0 0 10px empColor2 inset
     .inside-circle.button:hover ~ .text.centered
         letter-spacing 10px
-        font-size 42px
+        font-size font-size calc(1em + 2vw)
 
     .vertical-line
         top 50%
@@ -145,7 +146,7 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
 
     .text.centered
         position fixed
-        font-size 40px
+        font-size calc(1.5em + 2vw);
         letter-spacing 8px
         color textColor1
         font-weight bold
@@ -177,7 +178,7 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
                 background linear-gradient(90deg, transparent 0%, block-4-line-color 50%)
                 align-self flex-end
         .text
-            font-size 30px
+            font-size calc(0.8em + 1.5vw);
             color empColor5
             padding 20px
             opacity 1 // css animable

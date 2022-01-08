@@ -406,7 +406,7 @@ export async function handler(element, app) {
             }
         },
         { // page scrolled to end, make symbol "I/O"
-            duration: 0.01,
+            duration: 0.1,
             onstart: () => {
                 const lineScroll = block4InfoHeight * 6.5;
                 const pageScroll = block4InfoHeight * 6.5;
