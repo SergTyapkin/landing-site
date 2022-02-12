@@ -13,7 +13,7 @@ const html = `
 `;
 
 /**
- * Renders auth page and "activating" it's js
+ * Renders page and "activating" it's js
  *
  * @param {object} element html element to be rendered in
  * @param {object} app object of a main App class

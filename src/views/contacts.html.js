@@ -1,8 +1,16 @@
-import Handlebars from 'handlebars/dist/cjs/handlebars';
-
 const html = `
-<div style="background: mediumseagreen; width: 50%; height: 50vh" class="hidden">
-Какой-то блок
+<div class="absolute-wrapper fullsize">
+    <div class="standalone-form centered">
+        <div class="title">
+            <div class="primary">Сергей Тяпкин</div>
+            <a class="secondary" href="https://github.com/SergTyapkin">Githib: SergTyapkin</a>
+            <a class="secondary" href="https://vk.com/0pointer">VK (лучше сюда): 0pointer</a>
+            <a class="secondary" href="https://t.me/0pointer">Telegram: Сергей Тяпкин</a>
+        </div>
+        <div class="form" style="margin-top: 50px;">
+            <linkbutton href="/" class="btn">На главную</linkbutton>
+        </div>
+    </div>
 </div>
 `;
 
@@ -13,9 +21,5 @@ const html = `
  * @param {object} app object of a main App class
  */
 export async function handler(element, app) {
-    // --- Render page
-    const template = Handlebars.compile(html);
-    element.innerHTML = template();
-
-    console.log('NORM');
+    element.innerHTML = html;
 }
