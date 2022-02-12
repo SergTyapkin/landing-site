@@ -2,21 +2,24 @@ import Handlebars from 'handlebars/dist/cjs/handlebars';
 import PageScroller from '../modules/pageScroller';
 
 const html = `
-<div id="block-1" class="block-1 absolute-wrapper">
-    <div id="block-1-left" class="plate left fullsize"></div>
-    <div id="block-1-right" class="plate right fullsize"></div>
-    <div id="block-1-line-left" class="divide-line left animate"></div>
-    <div id="block-1-line-right" class="divide-line right animate"></div>
-</div>
-
+<!-- Circle fills and scales -->
 <div id="block-2" class="block-2 absolute-wrapper">
-    <svg id="block-2-circle" class="lighting-stroke circle centered hide" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
-    <svg id="block-2-circle-shadow" class="lighting-stroke circle centered hide" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
-    <div id="block-2-circle-div" class="lighting-stroke circle centered hide"></div>
+    <div id="block-2-text-left" class="text left">И что</div>
+    <div id="block-2-text-right" class="text right">дальше?</div>
+
+    <svg id="block-2-circle" class="lighting-stroke circle centered hidden" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
+    <svg id="block-2-circle-shadow" class="lighting-stroke circle centered hidden" viewBox="0 0 100 100"><circle r="50" cx="50" cy="50"/></svg>
+    <div id="block-2-circle-div" class="lighting-stroke circle centered hidden"></div>
 </div>
 
+<!-- Carousels -->
 <div id="block-3" class="block-3 absolute-wrapper">
-    <div id="block-3-carousel" class="carousel-3d fullsize hide">
+    <div id="block-3-bg-carousel" class="bg-carousel hidden">
+        <img src="images/photo-1.jpg" alt=""/>
+        <img src="images/photo-2.jpg" alt=""/>
+        <img src="images/photo-3.jpg" alt=""/>
+    </div>
+    <div id="block-3-carousel" class="carousel-3d fullsize hidden">
         <figure id="block-3-carousel-figure-1">
             <img src="images/photo-1.jpg" alt=""/>
             <img src="images/photo-2.jpg" alt=""/>
@@ -44,19 +47,37 @@ const html = `
     </div>
 </div>
 
-<div id="block-4" class="block-4 absolute-wrapper">
-    <svg id="block-4-spikes" class="spikes fullsize hide" preserveAspectRatio="none" viewBox="0 0 100 100">
+<!-- 2 plates -->
+<div id="block-1" class="block-1 absolute-wrapper">
+    <div id="block-1-left" class="plate left fullsize"></div>
+    <div id="block-1-right" class="plate right fullsize"></div>
+    <div id="block-1-line-left" class="divide-line left animate"></div>
+    <div id="block-1-line-right" class="divide-line right animate"></div>
+    
+    <div id="block-1-text-left" class="text left">
+        Ну привет, ты попал на мой сайт. <br> 
+        Я тут наделал всяких красивых анимашек, может тебе понравится
+    </div>
+    <div id="block-1-text-right" class="text right">
+        Я тут ещё какое-то классное приветствие написать хотел, но забыл. <br>
+        Листай вниз
+    </div>
+</div>
+
+<!-- Line moves down -->
+<div id="block-4" class="block-4 absolute-wrapper hidden">
+    <svg id="block-4-spikes" class="spikes fullsize hidden" preserveAspectRatio="none" viewBox="0 0 100 100">
         <radialGradient id="radial-grad" fx="50%" fy="100%" cy="0.5" r="0.7">
             <stop offset="50%" stop-color="white" stop-opacity="0.8"></stop>  
             <stop offset="100%" stop-color="white" stop-opacity="0.0"></stop>
         </radialGradient>
-        <path d="M 0 100 l 10 -20 l -5 -10 l 2 -3 l 1 -4 l 4 -3 l 1 -6 l -2 -7 l 1 -4 l -2 -5 l 10 -4 l -4 -3 l 3 -8 l 8 -2 l 1 -4 l 3 4 l 5 -9 l 1 3 l 4 2 l 3 -6 l 5 -2 l 4 10 l 2 5 l 4 2 l 2 -12 l 2 -3 l 5 8 l 1 10 l 4 -4 l 7 -2 l -3 4 l 2 5 l 8 1 l 2 5 l -5 3 l 3 2 l 6 5 l -3 2 l -1 3 l -2 5 l 3 7 l 3 1 l -3 5 l 7 8 l -2 3 L 100 100 L 100 0 L 0 0 Z" fill="url(#radial-grad)"/>
+        <path id="block-4-spikes-path" d="M 0 100 l 10 -20 l -5 -10 l 2 -3 l 1 -4 l 4 -3 l 1 -6 l -2 -7 l 1 -4 l -2 -5 l 10 -4 l -4 -3 l 3 -8 l 8 -2 l 1 -4 l 3 4 l 5 -9 l 1 3 l 4 2 l 3 -6 l 5 -2 l 4 10 l 2 5 l 4 2 l 2 -12 l 2 -3 l 5 8 l 1 10 l 4 -4 l 7 -2 l -3 4 l 2 5 l 8 1 l 2 5 l -5 3 l 3 2 l 6 5 l -3 2 l -1 3 l -2 5 l 3 7 l 3 1 l -3 5 l 7 8 l -2 3 L 100 100 L 100 0 L 0 0 Z" fill="url(#radial-grad)"/>
     </svg>
-    <svg id="block-4-outer-text-path" class="text-path hide" viewBox="0 -5 100 610" xmlns="//www.w3.org/2000/svg" xmlns:xlink="//www.w3.org/1999/xlink">
+    <svg id="block-4-outer-text-path" class="text-path hidden" viewBox="0 -5 100 610" xmlns="//www.w3.org/2000/svg" xmlns:xlink="//www.w3.org/1999/xlink">
         <path id="text-path" d="M 0 300 v -250 c 0 -70, 100 -70, 100 0 v 500 c 0 70, -100 70, -100 0 Z"/>
         <text id="block-4-text-path" dy="0px" dx="0px">
             <textPath xlink:href="#text-path">
-                SOME TEXT
+                ЧТО ПРОИСХОДИТ?
             </textPath>
         </text>
     </svg>
@@ -65,24 +86,24 @@ const html = `
     
     <div class="info-block">
         <div id="block-4-info-1" class="right closed">
-            <div class="text">Some more text there about something with important information about our first working area</div>    
+            <div class="text">Ты попал сюда по очень важной причине. Давай сделаем тебе такой же интересный сайт</div>    
             <div class="underline"></div>    
         </div>
         <div id="block-4-info-2" class="left closed">
-            <div class="text">Some more text there about something with important information about our second working area</div>    
+            <div class="text">Он будет заинтересовывать клиентов настолько же, насколько интересно было листать эту страницу</div>    
             <div class="underline"></div>    
         </div>
         <div id="block-4-info-3" class="right closed">
-            <div class="text">Some more text there about something with important information about our third working area</div>    
+            <div class="text">Мы не используем Cookies потому что нам лень</div>    
             <div class="underline"></div>    
         </div>
         <div id="block-4-info-4" class="left closed">
-            <div class="text">Some more text there about something with important information about our fourth working area</div>    
+            <div class="text">Прокручивая сайт дальше, вы принимаете пользовательское соглашение, а так же передаёте права на всё своё имущество, а так же отдаёте себя в рабство</div>    
             <div class="underline"></div>    
         </div>
     </div>
     
-    <div id="block-4-go-text" class="text centered hide stack" style="--stacks: 3;">
+    <div id="block-4-go-text" class="text centered hidden stack" style="--stacks: 3; pointer-events: none;">
         <span style="--index: 0;">Р*Б*ТАЙ Б***Ь!</span>
         <span style="--index: 1;">Р*Б*ТАЙ Б***Ь!</span>
         <span style="--index: 2;">Р*Б*ТАЙ Б***Ь!</span>
@@ -93,9 +114,10 @@ const html = `
 const divideLinesWidth = 1.5;
 const divideLinesBetween = 1;
 const divideLinesXOffset = 7;
+const block1TextOffset = 5; // %
+const block1TextMoving = 25; // %
 
 const block2CircleViewPortDiameter = 50;
-
 const block2CircleDiameter = 150;
 const block2CircleMaxScale = Math.max(document.documentElement.clientWidth, document.documentElement.clientHeight) / block2CircleDiameter * 1.5;
 
@@ -110,26 +132,26 @@ const block4CircleMaxestWidth = 10;
 const block4InfoHeight = 300;
 
 /**
- * Renders profile page and "activating" it's js
+ * Renders page and "activating" it's js
  *
  * @param {object} element html element to be rendered in
  * @param {object} app object of a main App class
  */
 export async function handler(element, app) {
-    const response = await app.apiGet('/user');
+    /*const response = await app.apiGet('/user');
     let username, avatarUrl;
     if (response.ok) {
         const data = await response.json();
         ({ username, avatarUrl } = data);
         app.storage.username = username;
         app.storage.avatarUrl = avatarUrl;
-    }
+    }*/
     // --- Render page
     const template = Handlebars.compile(html);
-    element.innerHTML = template({
+    element.innerHTML = template();/*template({
         username: username,
         avatarUrl: (avatarUrl?.length > 0) ? app.apiUrl + '/' + avatarUrl : app.defaultAvatarUrl
-    });
+    });*/
     element.classList.add('landing');
 
     // --- Start page logic
@@ -137,12 +159,17 @@ export async function handler(element, app) {
     const block1Right = document.getElementById('block-1-right');
     const block1LineLeft = document.getElementById('block-1-line-left');
     const block1LineRight = document.getElementById('block-1-line-right');
+    const block1TextRight = document.getElementById('block-1-text-right');
+    const block1TextLeft = document.getElementById('block-1-text-left');
 
     const block2 = document.getElementById('block-2');
     const block2Circle = document.getElementById('block-2-circle');
     const block2CircleShadow = document.getElementById('block-2-circle-shadow');
     const block2CircleDiv = document.getElementById('block-2-circle-div');
+    const block2TextLeft = document.getElementById('block-2-text-left');
+    const block2TextRight = document.getElementById('block-2-text-right');
 
+    const block3BgCarousel = document.getElementById('block-3-bg-carousel');
     const block3Carousel = document.getElementById('block-3-carousel');
     const block3CarouselFigure1 = document.getElementById('block-3-carousel-figure-1');
     const block3CarouselFigure2 = document.getElementById('block-3-carousel-figure-2');
@@ -150,6 +177,7 @@ export async function handler(element, app) {
 
     const block4 = document.getElementById('block-4');
     const block4Spikes = document.getElementById('block-4-spikes');
+    const block4SpikesPath = document.getElementById('block-4-spikes-path');
     const block4OuterTextPath = document.getElementById('block-4-outer-text-path');
     const block4TextPath = document.getElementById('block-4-text-path');
     const block4VerticalLine = document.getElementById('block-4-vertical-line');
@@ -163,60 +191,104 @@ export async function handler(element, app) {
     setTimeout(() => block1LineLeft.classList.remove('animate'), 500);
     setTimeout(() => block1LineRight.classList.remove('animate'), 750);
 
-    function show(element) {
-        element.classList.remove('hide');
+    const pathModsAbs = [];
+    for (let i = 0; i < 100; i++) {
+        pathModsAbs.push(Math.random() * 10 - 5);
     }
-    function hide(element) {
-        element.classList.add('hide');
+
+    const hidingTimeouts = [];
+    function show(element, _classname = 'show') {
+        element.classList.remove('hide', 'hidden');
+        element.classList.add(_classname);
+        hidingTimeouts.forEach((timeout, idx) => {
+            if (timeout.element === element) {
+                clearTimeout(timeout.timeout);
+            }
+            hidingTimeouts.splice(idx, 1);
+        });
     }
+    function showfast(element) {
+        show(element, 'showed');
+    }
+    function hide(element, _classname = 'hide') {
+        element.classList.remove('show', 'showed');
+        element.classList.add(_classname);
+        hidingTimeouts.push({
+            element: element,
+            timeout: setTimeout(() => { element.classList.add('hidden'); }, 300)
+        });
+    }
+    function hidefast(element) {
+        hide(element, 'hidden');
+    }
+
     const Scroller = new PageScroller();
     Scroller.setHandlers([
         // --- Block 1
         { // left plate goes to left
             duration: 1,
             onstart: () => {
-                show(block1LineLeft);
-                show(block1Left);
+                showfast(block1LineLeft);
+                showfast(block1Left);
+                showfast(block1TextLeft);
             },
             onprogress: (progress) => {
                 const reProgress = 1 - progress;
                 block1LineLeft.classList.remove('animate');
                 block1LineLeft.style.clipPath = `polygon(${(50 - divideLinesBetween / 2 - divideLinesWidth + divideLinesXOffset) * reProgress}% 0%,  ${(50 - divideLinesBetween / 2 + divideLinesXOffset) * reProgress}% 0%,  ${(50 - divideLinesBetween / 2 - divideLinesXOffset) * reProgress}% 100%,  ${(50 - divideLinesBetween / 2 - divideLinesWidth - divideLinesXOffset) * reProgress}% 100%)`;
                 block1Left.style.clipPath = `polygon(0% 0%, ${(50 - divideLinesBetween / 2 - divideLinesWidth + divideLinesXOffset) * reProgress}% 0%,  ${(50 - divideLinesBetween / 2 - divideLinesWidth - divideLinesXOffset) * reProgress}% 100%, 0% 100%)`;
+
+                block1TextLeft.style.transform = `translateY(-50%) rotate3d(0, 1, -0.1, ${-80 * progress}deg)`;
+                block1TextLeft.style.left = `${block1TextOffset - block1TextMoving * progress}%`;
+                block1TextLeft.style.filter = `blur(${10 * progress}px)`;
+                block1TextLeft.style.opacity = `${1 - progress}`;
             },
             onendTop: () => {
             },
             onendBottom: () => {
-                hide(block1LineLeft);
-                hide(block1Left);
+                hidefast(block1LineLeft);
+                hidefast(block1Left);
+                hidefast(block1TextLeft);
             }
         },
         { // right plate goes to right
-            duration: 1,
+            duration: 2,
             onstart: () => {
-                show(block1LineRight);
-                show(block1Right);
+                showfast(block1LineRight);
+                showfast(block1Right);
+                showfast(block1TextRight);
             },
             onprogress: (progress) => {
                 progress = 100 / (50 + divideLinesBetween / 2 - divideLinesXOffset) * progress;
                 block1LineRight.classList.remove('animate');
+                // const leftDownPointX = 100 - (50 - divideLinesBetween / 2 + divideLinesXOffset) * (1 - progress);
+                // block1LineRight.style.clipPath = `polygon(${leftDownPointX + divideLinesXOffset * 2}% 0%,  ${leftDownPointX + divideLinesXOffset * 2 + divideLinesWidth}% 0%,  ${leftDownPointX + divideLinesWidth}% 100%,  ${leftDownPointX}% 100%)`;
+                // block1Right.style.clipPath = `polygon(${leftDownPointX + divideLinesWidth + divideLinesXOffset * 2}% 0%, 100% 0%, 100% 100%,  ${leftDownPointX + divideLinesWidth}% 100%)`;
                 block1LineRight.style.clipPath = `polygon(${(50 + divideLinesBetween / 2 + divideLinesXOffset) * (1 + progress)}% 0%,  ${(50 + divideLinesBetween / 2 + divideLinesWidth + divideLinesXOffset) * (1 + progress)}% 0%,  ${(50 + divideLinesBetween / 2 + divideLinesWidth - divideLinesXOffset) * (1 + progress)}% 100%,  ${(50 + divideLinesBetween / 2 - divideLinesXOffset) * (1 + progress)}% 100%)`;
                 block1Right.style.clipPath = `polygon(${(50 + divideLinesBetween / 2 + divideLinesWidth + divideLinesXOffset) * (1 + progress)}% 0%, 100% 0%, 100% 100%,  ${(50 + divideLinesBetween / 2 + divideLinesWidth - divideLinesXOffset) * (1 + progress)}% 100%)`;
+
+                block1TextRight.style.transform = `translateY(-50%) rotate3d(0, 1, 0.1, ${80 * progress}deg)`;
+                block1TextRight.style.right = `${block1TextOffset - block1TextMoving * progress}%`;
+                block1TextRight.style.filter = `blur(${10 * progress}px)`;
+                block1TextRight.style.opacity = `${1 - progress}`;
             },
             onendTop: () => {
             },
             onendBottom: () => {
-                hide(block1LineRight);
-                hide(block1Right);
+                hidefast(block1LineRight);
+                hidefast(block1Right);
+                hidefast(block1TextRight);
             }
         },
 
         // --- Block 2
         { // circle stroke fills around
-            duration: 1,
+            duration: 2,
             onstart: () => {
                 show(block2Circle);
                 show(block2CircleShadow);
+                block2TextRight.classList.add('moved');
+                block2TextLeft.classList.add('moved');
             },
             onprogress: (progress) => {
                 block2CircleShadow.style.strokeDasharray = block2Circle.style.strokeDasharray = 2 * Math.PI * block2CircleViewPortDiameter * progress + ' 1000';
@@ -224,16 +296,18 @@ export async function handler(element, app) {
             onendTop: () => {
                 hide(block2Circle);
                 hide(block2CircleShadow);
+                block2TextRight.classList.remove('moved');
+                block2TextLeft.classList.remove('moved');
             },
             onendBottom: () => {
-                hide(block2Circle);
-                hide(block2CircleShadow);
+                hidefast(block2Circle);
+                hidefast(block2CircleShadow);
             }
         },
         { // circle scales over the screen
             duration: 1,
             onstart: () => {
-                show(block2CircleDiv);
+                showfast(block2CircleDiv);
                 block2CircleDiv.classList.add('filled');
                 block2Circle.classList.add('filled');
             },
@@ -241,13 +315,17 @@ export async function handler(element, app) {
                 block2CircleDiv.style.transform = block2CircleDiv.style.transform = `rotate(-90deg) translate(50%, -50%) scale(${1 + block2CircleMaxScale * progress})`;
             },
             onendTop: () => {
-                hide(block2CircleDiv);
+                hidefast(block2CircleDiv);
                 block2CircleDiv.classList.remove('filled');
                 block2Circle.classList.remove('filled');
                 block2Circle.classList.remove('filled');
+                showfast(block2Circle);
+                showfast(block2CircleShadow);
             },
             onendBottom: () => {
                 block2Circle.classList.remove('filled');
+                hidefast(block2TextRight);
+                hidefast(block2TextLeft);
             }
         },
 
@@ -256,17 +334,24 @@ export async function handler(element, app) {
             duration: 5,
             onstart: () => {
                 show(block3Carousel);
+                showfast(block3BgCarousel);
             },
             onprogress: (progress) => {
                 block3CarouselFigure1.style.transform = `rotateY(${130 + 720 * progress}deg) translateY(${-160 + 255 * progress}%) translateX(${25 - 50 * progress}%)`;
                 block3CarouselFigure2.style.transform = `rotateY(${270 - 720 * progress}deg) translateY(${-75 + 200 * progress}%) translateX(${-150 + 300 * progress}%)`;
                 block3CarouselFigure3.style.transform = `rotateY(${180 + 720 * progress}deg) translateY(${-25 + 225 * progress}%) translateX(${150 - 200 * progress}%)`;
+                block3BgCarousel.style.transform = `translateX(${-130 + (150 * 1.33) * progress}%)`;
             },
             onendTop: () => {
                 hide(block3Carousel);
+                hidefast(block3BgCarousel);
+
+                showfast(block2TextRight);
+                showfast(block2TextLeft);
             },
             onendBottom: () => {
                 hide(block3Carousel);
+                hidefast(block3BgCarousel);
             }
         },
 
@@ -274,6 +359,7 @@ export async function handler(element, app) {
         { // circle scales inside the screen
             duration: 1,
             onstart: () => {
+                show(block4);
                 show(block2CircleDiv);
                 block2CircleDiv.classList.add('filled');
             },
@@ -282,6 +368,7 @@ export async function handler(element, app) {
                 block2CircleDiv.style.transform = block2CircleDiv.style.transform = `rotate(-90deg) translate(50%, -50%) scale(${1 + block2CircleMaxScale * (1 - progress)})`;
             },
             onendTop: () => {
+                hidefast(block4);
             },
             onendBottom: () => {
                 block2CircleDiv.classList.remove('filled');
@@ -296,6 +383,10 @@ export async function handler(element, app) {
             onprogress: (progress) => {
                 block4TextPath.setAttribute('dx', 500 * progress + 'px');
                 block4InsideCircle.style.height = block4InsideCircle.style.width = block2CircleDiameter - (block2CircleDiameter - block4CircleMinDiameter) * progress + 'px';
+
+                const pathMods = pathModsAbs.map((el) => el * progress / 2);
+                const path = `M 0 100 L ${10 + pathMods[0]} ${80 + pathMods[1]} L ${5 + pathMods[2]} ${70 + pathMods[3]} L ${7 + pathMods[4]} ${67 + pathMods[5]} L ${8 + pathMods[6]} ${63 + pathMods[7]} L ${12 + pathMods[8]} ${60 + pathMods[9]} L ${13 + pathMods[10]} ${54 + pathMods[11]} L ${11 + pathMods[12]} ${47 + pathMods[13]} L ${12 + pathMods[14]} ${43 + pathMods[15]} L ${10 + pathMods[16]} ${38 + pathMods[17]} L ${20 + pathMods[18]} ${34 + pathMods[19]} L ${16 + pathMods[20]} ${31 + pathMods[21]} L ${19 + pathMods[22]} ${23 + pathMods[23]} L ${27 + pathMods[24]} ${21 + pathMods[25]} L ${28 + pathMods[26]} ${17 + pathMods[27]} L ${31 + pathMods[28]} ${21 + pathMods[29]} L ${36 + pathMods[30]} ${12 + pathMods[31]} L ${37 + pathMods[32]} ${15 + pathMods[33]} L ${41 + pathMods[34]} ${17 + pathMods[35]} L ${44 + pathMods[36]} ${11 + pathMods[37]} L ${49 + pathMods[38]} ${9 + pathMods[39]} L ${53 + pathMods[40]} ${19 + pathMods[41]} L ${55 + pathMods[42]} ${24 + pathMods[43]} L ${59 + pathMods[44]} ${26 + pathMods[45]} L ${61 + pathMods[46]} ${14 + pathMods[47]} L ${63 + pathMods[48]} ${11 + pathMods[49]} L ${68 + pathMods[50]} ${19 + pathMods[51]} L ${69 + pathMods[52]} ${29 + pathMods[53]} L ${73 + pathMods[54]} ${25 + pathMods[55]} L ${80 + pathMods[56]} ${23 + pathMods[57]} L ${77 + pathMods[58]} ${27 + pathMods[59]} L ${79 + pathMods[60]} ${32 + pathMods[61]} L ${87 + pathMods[62]} ${33 + pathMods[63]} L ${89 + pathMods[64]} ${38 + pathMods[65]} L ${84 + pathMods[66]} ${41 + pathMods[67]} L ${87 + pathMods[68]} ${43 + pathMods[69]} L ${93 + pathMods[70]} ${48 + pathMods[71]} L ${90 + pathMods[72]} ${50 + pathMods[73]} L ${89 + pathMods[74]} ${53 + pathMods[75]} L ${87 + pathMods[76]} ${58 + pathMods[77]} L ${90 + pathMods[78]} ${65 + pathMods[79]} L ${93 + pathMods[80]} ${66 + pathMods[81]} L ${90 + pathMods[82]} ${71 + pathMods[83]} L ${97 + pathMods[84]} ${79 + pathMods[85]} L ${95 + pathMods[86]} ${82 + pathMods[87]} L 100 100 L 100 0 L 0 0 Z`;
+                block4SpikesPath.setAttribute('d', path);
             },
             onendTop: () => {
                 hide(block4Spikes);
@@ -317,6 +408,10 @@ export async function handler(element, app) {
                 block2.style.top = block4.style.top = -pageScroll + 'px';
                 block4VerticalLine.style.height = block4CircleMinDiameter / 2 + lineScroll + 'px';
                 block4InsideCircle.style.marginTop = lineScroll + 'px';
+
+                const pathMods = pathModsAbs.map((el) => el * (0.5 + progress / 2));
+                const path = `M 0 100 L ${10 + pathMods[0]} ${80 + pathMods[1]} L ${5 + pathMods[2]} ${70 + pathMods[3]} L ${7 + pathMods[4]} ${67 + pathMods[5]} L ${8 + pathMods[6]} ${63 + pathMods[7]} L ${12 + pathMods[8]} ${60 + pathMods[9]} L ${13 + pathMods[10]} ${54 + pathMods[11]} L ${11 + pathMods[12]} ${47 + pathMods[13]} L ${12 + pathMods[14]} ${43 + pathMods[15]} L ${10 + pathMods[16]} ${38 + pathMods[17]} L ${20 + pathMods[18]} ${34 + pathMods[19]} L ${16 + pathMods[20]} ${31 + pathMods[21]} L ${19 + pathMods[22]} ${23 + pathMods[23]} L ${27 + pathMods[24]} ${21 + pathMods[25]} L ${28 + pathMods[26]} ${17 + pathMods[27]} L ${31 + pathMods[28]} ${21 + pathMods[29]} L ${36 + pathMods[30]} ${12 + pathMods[31]} L ${37 + pathMods[32]} ${15 + pathMods[33]} L ${41 + pathMods[34]} ${17 + pathMods[35]} L ${44 + pathMods[36]} ${11 + pathMods[37]} L ${49 + pathMods[38]} ${9 + pathMods[39]} L ${53 + pathMods[40]} ${19 + pathMods[41]} L ${55 + pathMods[42]} ${24 + pathMods[43]} L ${59 + pathMods[44]} ${26 + pathMods[45]} L ${61 + pathMods[46]} ${14 + pathMods[47]} L ${63 + pathMods[48]} ${11 + pathMods[49]} L ${68 + pathMods[50]} ${19 + pathMods[51]} L ${69 + pathMods[52]} ${29 + pathMods[53]} L ${73 + pathMods[54]} ${25 + pathMods[55]} L ${80 + pathMods[56]} ${23 + pathMods[57]} L ${77 + pathMods[58]} ${27 + pathMods[59]} L ${79 + pathMods[60]} ${32 + pathMods[61]} L ${87 + pathMods[62]} ${33 + pathMods[63]} L ${89 + pathMods[64]} ${38 + pathMods[65]} L ${84 + pathMods[66]} ${41 + pathMods[67]} L ${87 + pathMods[68]} ${43 + pathMods[69]} L ${93 + pathMods[70]} ${48 + pathMods[71]} L ${90 + pathMods[72]} ${50 + pathMods[73]} L ${89 + pathMods[74]} ${53 + pathMods[75]} L ${87 + pathMods[76]} ${58 + pathMods[77]} L ${90 + pathMods[78]} ${65 + pathMods[79]} L ${93 + pathMods[80]} ${66 + pathMods[81]} L ${90 + pathMods[82]} ${71 + pathMods[83]} L ${97 + pathMods[84]} ${79 + pathMods[85]} L ${95 + pathMods[86]} ${82 + pathMods[87]} L 100 100 L 100 0 L 0 0 Z`;
+                block4SpikesPath.setAttribute('d', path);
             },
             onendTop: () => {
                 hide(block4VerticalLine);
@@ -439,6 +534,11 @@ export async function handler(element, app) {
         }
     ]);
 
+    block4InsideCircle.addEventListener('click', () => {
+        element.classList.remove('landing');
+        Scroller.clear();
+        app.goto('/contacts');
+    });
     /*
     const avatarDataURL = document.getElementById('avatarDataURL');
     if (avatarUrl) {

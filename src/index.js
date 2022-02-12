@@ -4,8 +4,9 @@ import './styles/carousel3D.styl';
 import './styles/formControls.styl';
 import './styles/popupMessages.styl';
 import './styles/glitch.styl';
+import './styles/show-hide.styl';
 
-// import { registerSW } from './modules/sw-installer.js';
+import { registerSW } from './modules/sw-installer.js';
 import App from './app';
 
 // const API_BASE_URL = 'https://your-site/api';
@@ -23,7 +24,7 @@ async function main() {
     document.head.innerHTML += headContentHTML;
     document.body.innerHTML = baseContentHTML + document.body.innerHTML;
 
-    // await registerSW();
+    await registerSW();
 
     const { hostname, origin, pathname, search } = window.location;
     let apiUrl = API_BASE_URL;

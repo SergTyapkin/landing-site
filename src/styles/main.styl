@@ -8,6 +8,9 @@ divide-lines-x-offset = 7%
 block-1-circle-color = empColor2
 block-2-circle-size = 150px
 block-2-fill-color = #111111
+block-2-text-offset-between = 30px
+
+block-3-images-margin = 5%
 
 block-4-text-path-width = 300px
 block-4-text-path-height = 1800px
@@ -34,11 +37,8 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
     height 100vh
     pointer-events none
 .landing > div > *
-    opacity 1
-    transition opacity 0.3s ease
     pointer-events auto
-/*.landing-block hide
-    opacity 0 */ // in end of file
+
 
 // -------- Block 1
 .block-1 > *
@@ -67,6 +67,21 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
     .plate.right
         clip-path polygon((50% + divide-lines-between / 2 + divide-lines-width + divide-lines-x-offset) 0%, 100% 0%, 100% 100%, (50% + divide-lines-between / 2 + divide-lines-width - divide-lines-x-offset) 100%)
 
+    .text
+        font-size 2.3em
+        background none
+        color textColor1
+        width 30%
+        transform translateY(-50%) // js animable
+    .text.left
+        text-align left
+        left 5%
+        top 40%
+    .text.right
+        text-align right
+        right 5%
+        top 60%
+
 // ------- Block 2
 .block-2 > *
     stroke empColor2
@@ -86,6 +101,37 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
         fill block-2-fill-color
     div.filled
         background block-2-fill-color
+
+    .text
+        background none
+        color textColor1
+        font-size fontSizeBig
+        max-width 30%
+        top 50%
+        left 50%
+        transition padding ease 0.3s
+    .text.left
+        transform translate(-100%, -50%)
+        padding-right block-2-text-offset-between
+    .text.right
+        transform translate(0, -50%)
+        padding-left block-2-text-offset-between
+    .text.left.moved
+        padding-right (block-2-text-offset-between + block-2-circle-size / 2)
+    .text.right.moved
+        padding-left (block-2-text-offset-between + block-2-circle-size / 2)
+
+// ------- Block 3
+.block-3
+    .bg-carousel
+        height 100%
+        transform translateX(-100% - block-3-images-margin * 6) // js animable
+        opacity 0.2 !important
+        display flex
+        flex-direction row
+        img
+            height (100% - block-3-images-margin * 6)
+            padding (block-3-images-margin) block-3-images-margin
 
 // ------- Block 4
 .block-4
@@ -208,9 +254,6 @@ div.lighting-stroke
     border-width 5px
     border-style: solid
     border-radius 50%
-
-.landing > div .hide
-    opacity 0
 
 .centered
     transform translate(-50%, -50%)

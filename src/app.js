@@ -4,11 +4,11 @@ import { request } from './modules/requests';
 import PopupMessages from './modules/popupMessages';
 import Modal from './modules/modal';
 
-import * as auth from './views/auth.html.js';
-/* import * as user from './views/profile.html.js';
+/* import * as auth from './views/auth.html.js';
+import * as user from './views/profile.html.js';
 import * as signup from './views/signup.html.js';
-import * as changePassword from './views/change_password.html.js';
-import * as messages from './views/messages.html.js'; */
+import * as changePassword from './views/change_password.html.js'; */
+import * as contacts from './views/contacts.html.js';
 import * as main from './views/main.html.js';
 import * as view404 from './views/404.html.js';
 
@@ -32,21 +32,17 @@ export default class App {
 
         this.routes = [
             {
-                urlRegex: /^\/auth$/,
-                title: `${this.name} | Авторизация`,
-                handler: auth.handler,
+                urlRegex: /^\/?$/,
+                title: `${this.name} | Главная`,
+                handler: main.handler,
+                authRequired: false
+            },
+            {
+                urlRegex: /^\/contacts$/,
+                title: `${this.name} | Контакты`,
+                handler: contacts.handler,
                 authRequired: false
             },/*
-            {
-                urlRegex: /^\/signup$/,
-                handler: signup.handler,
-                authRequired: false
-            },
-            {
-                urlRegex: /^\/user$/,
-                handler: user.handler,
-                authRequired: true
-            },
             {
                 urlRegex: /^\/user\/([A-Za-z0-9_]){1,}\/password$/,
                 handler: changePassword.handler,
@@ -56,13 +52,13 @@ export default class App {
                 urlRegex: /^\/(\?.*)?$/,
                 handler: messages.handler,
                 authRequired: true,
-            } */
+            },
             {
                 urlRegex: /^\/.*$/,
                 title: `${this.name} | Главная`,
                 handler: main.handler,
                 authRequired: false
-            }
+            }*/
         ];
 
         window.addEventListener('popstate', () => {
@@ -108,13 +104,12 @@ export default class App {
             history.pushState(null, null, path);
         }
 
-        let handObj = this.__getHandler(path);
         let { handler = view404.handler, authRequired = false, background = DEFAULT_BACKGROUND, title = 'Страница не найдена' } = this.__getHandler(path);
 
-        if (authRequired && !this.storage.username) {
+        /* if (authRequired && !this.storage.username) {
             history.pushState(null, null, '/auth');
             handler = auth.handler;
-        }
+        } */
 
         await renderer.render(this.element, handler, background, title, this);
     }

@@ -69,4 +69,8 @@ export default class PageScroller {
 
         this.onscrollElement.addEventListener('scroll', this.scrollHandler);
     }
+
+    clear() {
+        this.element.style.height = '';
+    }
 }
