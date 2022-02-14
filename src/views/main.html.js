@@ -86,11 +86,11 @@ const html = `
     
     <div class="info-block">
         <div id="block-4-info-1" class="right closed">
-            <div class="text">Ты попал сюда по очень важной причине. Давай сделаем тебе такой же интересный сайт</div>    
+            <div class="text">Ты попал сюда по очень важной причине. Давай сделаем тебе такой же классный сайт</div>    
             <div class="underline"></div>    
         </div>
         <div id="block-4-info-2" class="left closed">
-            <div class="text">Он будет заинтересовывать клиентов настолько же, насколько интересно было листать эту страницу</div>    
+            <div class="text">Он будет интерессовать людей так же, как интересно листать эту страницу</div>    
             <div class="underline"></div>    
         </div>
         <div id="block-4-info-3" class="right closed">
@@ -98,7 +98,7 @@ const html = `
             <div class="underline"></div>    
         </div>
         <div id="block-4-info-4" class="left closed">
-            <div class="text">Прокручивая сайт дальше, вы принимаете пользовательское соглашение, а так же передаёте права на всё своё имущество, а так же отдаёте себя в рабство</div>    
+            <div class="text">Листая дальше, вы принимаете пользовательское соглашение, передаёте права на всё своё имущество, а так же отдаёте себя в рабство</div>    
             <div class="underline"></div>    
         </div>
     </div>
@@ -111,6 +111,11 @@ const html = `
 </div>
 `;
 
+window.x = document.documentElement.clientWidth;
+window.y = document.documentElement.clientHeight;
+window.max = Math.max(window.x, window.y);
+window.min = Math.min(window.x, window.y);
+
 const divideLinesWidth = 1.5;
 const divideLinesBetween = 1;
 const divideLinesXOffset = 7;
@@ -118,18 +123,19 @@ const block1TextOffset = 5; // %
 const block1TextMoving = 25; // %
 
 const block2CircleViewPortDiameter = 50;
-const block2CircleDiameter = 150;
-const block2CircleMaxScale = Math.max(document.documentElement.clientWidth, document.documentElement.clientHeight) / block2CircleDiameter * 1.5;
+const block2CircleDiameter = window.min * 0.2; // 150;
+const block2CircleMaxScale = window.max / block2CircleDiameter * 1.5;
 
-const block4CircleMinDiameter = 10;
-const block4CircleMaxDiameter = 300;
-const block4CircleMaxestDiameter = 500;
-const block4LineMinWidth = 4;
-const block4LineMaxWidth = 10;
-const block4CircleMinWidth = 1;
-const block4CircleMaxWidth = 5;
-const block4CircleMaxestWidth = 10;
-const block4InfoHeight = 300;
+const block4CircleMinDiameter = Math.max(window.min * 0.020, 10); // 10;
+const block4CircleMaxDiameter = window.min * 0.5; // 300;
+const block4CircleMaxestDiameter = window.min * 0.7; // 500;
+const block4LineMinWidth = Math.max(window.min * 0.008, 3); // 4;
+const block4LineMaxWidth = Math.min(window.min * 0.020, 10); // 10;
+const block4CircleMinWidth = Math.max(window.min * 0.002, 1); // 1;
+const block4CircleMaxWidth = Math.min(window.min * 0.010, 5); // 5;
+const block4CircleMaxestWidth = Math.min(window.min * 0.020, 10); // 10;
+const block4InfoHeight = 350;
+const block4TextPathHeight = window.min * 1.8;
 
 /**
  * Renders page and "activating" it's js
@@ -375,7 +381,7 @@ export async function handler(element, app) {
             }
         },
         { // text moves around circle and inside circle moves to center
-            duration: 1,
+            duration: 2,
             onstart: () => {
                 show(block4Spikes);
                 show(block4OuterTextPath);
@@ -406,7 +412,7 @@ export async function handler(element, app) {
                 const pageScroll = block4InfoHeight * progress;
                 block4TextPath.setAttribute('dx', 500 + 750 * progress + 'px');
                 block2.style.top = block4.style.top = -pageScroll + 'px';
-                block4VerticalLine.style.height = block4CircleMinDiameter / 2 + lineScroll + 'px';
+                block4VerticalLine.style.height = block4LineMinWidth / 2 + lineScroll + 'px';
                 block4InsideCircle.style.marginTop = lineScroll + 'px';
 
                 const pathMods = pathModsAbs.map((el) => el * (0.5 + progress / 2));
@@ -429,7 +435,7 @@ export async function handler(element, app) {
                 const lineScroll = block4InfoHeight * (progress + 0.5);
                 const pageScroll = block4InfoHeight * progress;
                 block2.style.top = block4.style.top = -pageScroll + 'px';
-                block4VerticalLine.style.height = block4CircleMinDiameter / 2 + lineScroll + 'px';
+                block4VerticalLine.style.height = block4LineMinWidth / 2 + lineScroll + 'px';
                 block4InsideCircle.style.marginTop = lineScroll + 'px';
             },
             onendTop: () => {
@@ -448,7 +454,7 @@ export async function handler(element, app) {
                 const lineScroll = block4InfoHeight * (progress + 0.5);
                 const pageScroll = block4InfoHeight * progress;
                 block2.style.top = block4.style.top = -pageScroll + 'px';
-                block4VerticalLine.style.height = block4CircleMinDiameter / 2 + lineScroll + 'px';
+                block4VerticalLine.style.height = block4LineMinWidth / 2 + lineScroll + 'px';
                 block4InsideCircle.style.marginTop = lineScroll + 'px';
             },
             onendTop: () => {
@@ -467,7 +473,7 @@ export async function handler(element, app) {
                 const lineScroll = block4InfoHeight * (progress + 0.5);
                 const pageScroll = block4InfoHeight * progress;
                 block2.style.top = block4.style.top = -pageScroll + 'px';
-                block4VerticalLine.style.height = block4CircleMinDiameter / 2 + lineScroll + 'px';
+                block4VerticalLine.style.height = block4LineMinWidth / 2 + lineScroll + 'px';
                 block4InsideCircle.style.marginTop = lineScroll + 'px';
             },
             onendTop: () => {
@@ -476,7 +482,7 @@ export async function handler(element, app) {
             onendBottom: () => {
             }
         },
-        { // page scrolls down and line moves down and to side
+        { // page scrolls down and circle gets higher
             duration: 1,
             onstart: () => {
                 block4Info4.classList.remove('closed');
@@ -486,12 +492,13 @@ export async function handler(element, app) {
                 const lineScroll = block4InfoHeight * (progress * 2 + 4.5);
                 const pageScroll = 2.5 * block4InfoHeight * progress + block4InfoHeight * 4;
                 block4TextPath.setAttribute('dx', 500 + 1000 * progress + 'px');
-                block4OuterTextPath.style.marginTop = block2CircleDiameter * (-1 + 2 * progress) + 'px';
                 block2.style.top = block4.style.top = -pageScroll + 'px';
-                block4VerticalLine.style.height = block4CircleMinDiameter / 2 + lineScroll + 'px';
+                block4VerticalLine.style.height = block4LineMinWidth / 2 + lineScroll + 'px';
                 block4InsideCircle.style.marginTop = lineScroll + 'px';
-                block4InsideCircle.style.height = block4InsideCircle.style.width = block4CircleMinDiameter + (block4CircleMaxDiameter - block4CircleMinDiameter) * progress + 'px';
+                const insideCircleSize = block4CircleMinDiameter + (block4CircleMaxDiameter - block4CircleMinDiameter) * progress;
+                block4InsideCircle.style.height = block4InsideCircle.style.width = insideCircleSize + 'px';
                 block4InsideCircle.style.borderWidth = block4CircleMinWidth + (block4CircleMaxWidth - block4CircleMinWidth) * progress + 'px';
+                block4OuterTextPath.style.marginTop = lineScroll - block4TextPathHeight + insideCircleSize + 'px';
             },
             onendTop: () => {
                 block4Info4.classList.add('closed');
@@ -509,8 +516,8 @@ export async function handler(element, app) {
                 block4VerticalLine.classList.add('bouncy');
                 block4InsideCircle.style.marginTop = lineScroll + 'px';
                 block4InsideCircle.style.height = block4InsideCircle.style.width = block4CircleMaxestDiameter + 'px';
-                block4VerticalLine.style.marginTop = lineScroll - 1.2 * block4InfoHeight + 'px';
-                block4VerticalLine.style.height = 33 + '%';
+                block4VerticalLine.style.marginTop = lineScroll - 0.7 * block4CircleMaxestDiameter + 'px';
+                block4VerticalLine.style.height = block4CircleMaxestDiameter / 2 + 'px';
                 block4InsideCircle.style.borderWidth = block4CircleMaxestWidth + 'px';
                 block4VerticalLine.style.width = block4LineMaxWidth + 'px';
                 block4VerticalLine.style.borderRadius = block4LineMaxWidth / 2 + 'px';

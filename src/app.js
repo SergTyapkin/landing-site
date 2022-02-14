@@ -52,13 +52,13 @@ export default class App {
                 urlRegex: /^\/(\?.*)?$/,
                 handler: messages.handler,
                 authRequired: true,
-            },
+            },*/
             {
                 urlRegex: /^\/.*$/,
                 title: `${this.name} | Главная`,
                 handler: main.handler,
                 authRequired: false
-            }*/
+            }
         ];
 
         window.addEventListener('popstate', () => {

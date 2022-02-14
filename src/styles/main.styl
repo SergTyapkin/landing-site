@@ -5,21 +5,24 @@ divide-lines-width = 1.5%
 divide-lines-between = 1%
 divide-lines-x-offset = 7%
 
+min = "min(%s, %s)"
+
 block-1-circle-color = empColor2
-block-2-circle-size = 150px
+block-2-circle-size = min % (20vw 20vh) //was 150px
 block-2-fill-color = #111111
 block-2-text-offset-between = 30px
+block-2-div-stroke-width = min % (0.7vw 0.7vh)
 
 block-3-images-margin = 5%
 
-block-4-text-path-width = 300px
-block-4-text-path-height = 1800px
-block-4-vertical-line-width = 4px
+block-4-text-path-width = min % (30vw 30vh) //300px
+block-4-text-path-height = min % (180vw 180vh)  //1800px
+block-4-vertical-line-width = min % (0.8vw 4px)
 
 block-4-line-color = empColor2
 block-4-info-underline-width = 2px
-block-4-info-height = 300px
-block-4-circle-size-max = 550px
+block-4-info-height = 350px //was 300px
+block-4-circle-size-max = min % (70vw 70vh) //was 550px
 
 bouncy = cubic-bezier(0.34,1.61,0.7,1)
 
@@ -68,7 +71,7 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
         clip-path polygon((50% + divide-lines-between / 2 + divide-lines-width + divide-lines-x-offset) 0%, 100% 0%, 100% 100%, (50% + divide-lines-between / 2 + divide-lines-width - divide-lines-x-offset) 100%)
 
     .text
-        font-size 2.3em
+        font-size fontSizeBig
         background none
         color textColor1
         width 30%
@@ -117,9 +120,9 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
         transform translate(0, -50%)
         padding-left block-2-text-offset-between
     .text.left.moved
-        padding-right (block-2-text-offset-between + block-2-circle-size / 2)
+        padding-right "calc(%s + %s / 2)" % (block-2-text-offset-between block-2-circle-size)
     .text.right.moved
-        padding-left (block-2-text-offset-between + block-2-circle-size / 2)
+        padding-left "calc(%s + %s / 2)" % (block-2-text-offset-between block-2-circle-size)
 
 // ------- Block 3
 .block-3
@@ -142,8 +145,8 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
         overflow visible
         top 50%
         left 50%
-        margin-top -(block-4-text-path-width / 2)
-        margin-left -(block-4-text-path-width / 2)
+        margin-top "calc(%s / -2)" % block-4-text-path-width
+        margin-left "calc(%s / -2)" % block-4-text-path-width
         letter-spacing 10px
         font-size calc(0.5em + 1vw)
     .text-path path
@@ -162,6 +165,7 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
         left 50%
         transform translate(-50%, -50%)
         transition height 0.3s ease, width 0.1s ease, border-width 0.2s bouncy;
+        pointer-events none
     .inside-circle.button
         transition height 0.3s ease, width 0.1s ease, border-width 0.2s bouncy, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease
         cursor pointer
@@ -174,25 +178,25 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
         box-shadow 0 0 20px empColor2, 0 0 10px empColor2 inset
     .inside-circle.button:hover ~ .text.centered
         letter-spacing 10px
-        font-size font-size calc(1em + 2vw)
+        font-size font-size fontSizeBig
 
     .vertical-line
         top 50%
         left 50%
-        margin-top -(block-4-vertical-line-width / 2)
-        margin-left -(block-4-vertical-line-width / 2)
+        margin-top "calc(%s / -2)" % block-4-vertical-line-width
+        margin-left "calc(%s / -2)" % block-4-vertical-line-width
         width block-4-vertical-line-width // js animable
         background block-4-line-color
         box-shadow 0 0 5px block-4-line-color
         height 0 //js animable
-        border-radius (block-4-vertical-line-width / 2)
+        border-radius "calc(%s / 2)" % block-4-vertical-line-width
         transition: width 0.2s ease;
     .vertical-line.bouncy
         transition: width 0.2s bouncy, margin-top 0.2s bouncy, height 0.15s bouncy;
 
     .text.centered
         position fixed
-        font-size calc(1.5em + 2vw);
+        font-size fontSizeBig
         letter-spacing 8px
         color textColor1
         font-weight bold
@@ -200,7 +204,7 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
 
     .info-block > *
         height block-4-info-height
-        width 35%
+        width 45%
         display flex
         flex-direction column
         justify-content flex-end
@@ -238,21 +242,22 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
                 opacity 0
             .underline
                 width 0
-
+    .info-block > *:last-child
+        .text
+            font-size fontSizeMiddle
 // ------- All
-.lighting-stroke
+svg.lighting-stroke
     background none
     fill transparent
     stroke-width 3px
     overflow visible
     stroke-linecap round
-.lighting-stroke + svg.lighting-stroke
+svg.lighting-stroke + svg.lighting-stroke
     filter blur(10px)
 div.lighting-stroke
-    box-shadow 0 0 3px colorShadow, 0 0 3px colorShadow inset,
-               0 0 12px empColor2, 0 0 12px empColor2 inset
-    border-width 5px
-    border-style: solid
+    box-shadow 0 0 3px colorShadow, 0 0 12px empColor2//, 0 0 3px colorShadow inset, 0 0 12px empColor2 inset
+    border-width block-2-div-stroke-width
+    border-style solid
     border-radius 50%
 
 .centered
