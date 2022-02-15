@@ -55,11 +55,11 @@ const html = `
     <div id="block-1-line-right" class="divide-line right animate"></div>
     
     <div id="block-1-text-left" class="text left">
-        Ну привет, ты попал на мой сайт. <br> 
         Я тут наделал всяких красивых анимашек, может тебе понравится
     </div>
     <div id="block-1-text-right" class="text right">
-        Я тут ещё какое-то классное приветствие написать хотел, но забыл
+        [Вставить какое-то классное приветствие] <br>
+        (я забыл)
     </div>
     <img id="block-1-scroll-image" src="images/arrow-down.gif" class="bottom-image">
 </div>
@@ -108,6 +108,7 @@ const html = `
         <span style="--index: 1;">Р*Б*ТАЙ Б***Ь!</span>
         <span style="--index: 2;">Р*Б*ТАЙ Б***Ь!</span>
     </div>
+    <img id="block-4-image-click" src="images/click.gif" class="centered image-click hidden">
 </div>
 `;
 
@@ -144,20 +145,20 @@ const block4TextPathHeight = window.min * 1.8;
  * @param {object} app object of a main App class
  */
 export async function handler(element, app) {
-    /*const response = await app.apiGet('/user');
+    /* const response = await app.apiGet('/user');
     let username, avatarUrl;
     if (response.ok) {
         const data = await response.json();
         ({ username, avatarUrl } = data);
         app.storage.username = username;
         app.storage.avatarUrl = avatarUrl;
-    }*/
+    } */
     // --- Render page
     const template = Handlebars.compile(html);
-    element.innerHTML = template();/*template({
+    element.innerHTML = template();/* template({
         username: username,
         avatarUrl: (avatarUrl?.length > 0) ? app.apiUrl + '/' + avatarUrl : app.defaultAvatarUrl
-    });*/
+    }); */
     element.classList.add('landing');
 
     // --- Start page logic
@@ -194,6 +195,7 @@ export async function handler(element, app) {
     const block4Info3 = document.getElementById('block-4-info-3');
     const block4Info4 = document.getElementById('block-4-info-4');
     const block4GoText = document.getElementById('block-4-go-text');
+    const block4ImageClick = document.getElementById('block-4-image-click');
 
     setTimeout(() => block1LineLeft.classList.remove('animate'), 500);
     setTimeout(() => block1LineRight.classList.remove('animate'), 750);
@@ -511,7 +513,7 @@ export async function handler(element, app) {
             }
         },
         { // page scrolled to end, make symbol "I/O"
-            duration: 0.1,
+            duration: 0.3,
             onstart: () => {
                 const lineScroll = block4InfoHeight * 6.5;
                 const pageScroll = block4InfoHeight * 6.5;
@@ -527,6 +529,8 @@ export async function handler(element, app) {
                 show(block4GoText);
                 block4GoText.classList.add('activated');
                 block4InsideCircle.classList.add('button');
+                show(block4ImageClick);
+                block4ImageClick.style.marginTop = pageScroll + 'px';
             },
             onprogress: (progress) => {
             },
@@ -538,6 +542,7 @@ export async function handler(element, app) {
                 hide(block4GoText);
                 block4GoText.classList.remove('activated');
                 block4InsideCircle.classList.remove('button');
+                hide(block4ImageClick);
             },
             onendBottom: () => {
             }
