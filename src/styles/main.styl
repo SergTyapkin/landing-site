@@ -8,6 +8,8 @@ divide-lines-x-offset = 7%
 min = "min(%s, %s)"
 
 block-1-circle-color = empColor2
+block-1-bottom-image-width = min % (30vw 30vh)
+
 block-2-circle-size = min % (20vw 20vh) //was 150px
 block-2-fill-color = #111111
 block-2-text-offset-between = 30px
@@ -84,6 +86,13 @@ bouncy = cubic-bezier(0.34,1.61,0.7,1)
         text-align right
         right 5%
         top 60%
+
+    .bottom-image
+        background none
+        width block-1-bottom-image-width
+        bottom 0
+        left 50%
+        transform translate(-20%, 20%)
 
 // ------- Block 2
 .block-2 > *

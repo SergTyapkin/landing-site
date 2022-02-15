@@ -59,9 +59,9 @@ const html = `
         Я тут наделал всяких красивых анимашек, может тебе понравится
     </div>
     <div id="block-1-text-right" class="text right">
-        Я тут ещё какое-то классное приветствие написать хотел, но забыл. <br>
-        Листай вниз
+        Я тут ещё какое-то классное приветствие написать хотел, но забыл
     </div>
+    <img id="block-1-scroll-image" src="images/arrow-down.gif" class="bottom-image">
 </div>
 
 <!-- Line moves down -->
@@ -167,6 +167,7 @@ export async function handler(element, app) {
     const block1LineRight = document.getElementById('block-1-line-right');
     const block1TextRight = document.getElementById('block-1-text-right');
     const block1TextLeft = document.getElementById('block-1-text-left');
+    const block1ScrollImage = document.getElementById('block-1-scroll-image');
 
     const block2 = document.getElementById('block-2');
     const block2Circle = document.getElementById('block-2-circle');
@@ -237,6 +238,7 @@ export async function handler(element, app) {
                 showfast(block1LineLeft);
                 showfast(block1Left);
                 showfast(block1TextLeft);
+                // show(block1ScrollImage);
             },
             onprogress: (progress) => {
                 const reProgress = 1 - progress;
@@ -263,6 +265,7 @@ export async function handler(element, app) {
                 showfast(block1LineRight);
                 showfast(block1Right);
                 showfast(block1TextRight);
+                hide(block1ScrollImage);
             },
             onprogress: (progress) => {
                 progress = 100 / (50 + divideLinesBetween / 2 - divideLinesXOffset) * progress;
