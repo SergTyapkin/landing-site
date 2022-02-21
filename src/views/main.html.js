@@ -86,11 +86,11 @@ const html = `
     
     <div class="info-block">
         <div id="block-4-info-1" class="right closed">
-            <div class="text">Ты попал сюда по очень важной причине. Давай сделаем тебе такой же классный сайт</div>    
+            <div class="text">Не забудь нажать на кнопку в конце и написать мне, как тебе эта страничка</div>    
             <div class="underline"></div>    
         </div>
         <div id="block-4-info-2" class="left closed">
-            <div class="text">Он будет интерессовать людей так же, как интересно листать эту страницу</div>    
+            <div class="text">Хотел бы, чтоб сайт твоего универа выглядел бы так же?)</div>    
             <div class="underline"></div>    
         </div>
         <div id="block-4-info-3" class="right closed">
