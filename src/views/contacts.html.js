@@ -4,8 +4,8 @@ const html = `
         <div class="title">
             <div class="primary">Сергей Тяпкин</div>
             <a class="secondary" href="https://github.com/SergTyapkin">Githib: SergTyapkin</a>
-            <a class="secondary" href="https://vk.com/0pointer">VK (лучше сюда): 0pointer</a>
-            <a class="secondary" href="https://t.me/tyapkin_s">Telegram: Сергей Тяпкин</a>
+            <a class="secondary" href="https://vk.com/tyapkin_s">VK (лучше сюда): tyapkin_s</a>
+            <a class="secondary" href="https://t.me/tyapkin_s">Telegram: @tyapkin_s</a>
         </div>
         <div class="form" style="margin-top: 50px;">
             <linkbutton href="/" class="btn">На главную</linkbutton>
